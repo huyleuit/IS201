@@ -32,13 +32,16 @@ public class loginPanel extends javax.swing.JPanel {
         btnLogin.addActionListener(listener);
     }
 
-    public void setActionListenerForEnterKey (KeyListener listener)
-    {
-        this.addKeyListener(listener);
-    }
-
     public void setErrorLabel(String error) {
         errorLabel.setText(error);
+    }
+
+    public void setUsernameError(String error) {
+        usernameError.setText(error);
+    }
+
+    public void setPasswordError(String error) {
+        passwordError.setText(error);
     }
 
     /**
@@ -57,11 +60,13 @@ public class loginPanel extends javax.swing.JPanel {
         usernameLabel = new javax.swing.JLabel();
         passwordLabel = new javax.swing.JLabel();
         errorLabel = new javax.swing.JLabel();
+        passwordError = new javax.swing.JLabel();
+        usernameError = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(400, 295));
+        setPreferredSize(new java.awt.Dimension(400, 310));
 
-        loginLabel.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
+        loginLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         loginLabel.setText("Đăng nhập");
 
         username.setForeground(new java.awt.Color(153, 153, 153));
@@ -79,7 +84,7 @@ public class loginPanel extends javax.swing.JPanel {
         });
 
         btnLogin.setBackground(new java.awt.Color(0, 0, 255));
-        btnLogin.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnLogin.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnLogin.setForeground(new java.awt.Color(255, 255, 255));
         btnLogin.setText("Đăng nhập");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -88,14 +93,19 @@ public class loginPanel extends javax.swing.JPanel {
             }
         });
 
-        usernameLabel.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
+        usernameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         usernameLabel.setText("Tên đăng nhập");
 
-        passwordLabel.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
+        passwordLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         passwordLabel.setText("Mật khẩu");
 
         errorLabel.setForeground(new java.awt.Color(255, 0, 51));
         errorLabel.setToolTipText("");
+
+        passwordError.setForeground(new java.awt.Color(255, 0, 51));
+        passwordError.setToolTipText("");
+
+        usernameError.setForeground(new java.awt.Color(255, 0, 51));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -107,40 +117,44 @@ public class loginPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(passwordLabel)
-                            .addComponent(loginLabel))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(usernameError)
+                            .addComponent(errorLabel))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(password, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
-                            .addComponent(username, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(20, 20, 20))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(usernameLabel)
-                        .addGap(0, 161, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(errorLabel)
-                .addGap(69, 69, 69))
+                            .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(username, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(usernameLabel)
+                                    .addComponent(passwordError)
+                                    .addComponent(loginLabel))
+                                .addGap(0, 248, Short.MAX_VALUE)))
+                        .addGap(20, 20, 20))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(loginLabel)
-                .addGap(13, 13, 13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(errorLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(usernameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(usernameError)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(passwordLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(errorLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(passwordError)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+                .addGap(29, 29, 29))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -162,8 +176,10 @@ public class loginPanel extends javax.swing.JPanel {
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel loginLabel;
     private javax.swing.JPasswordField password;
+    private javax.swing.JLabel passwordError;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JTextField username;
+    private javax.swing.JLabel usernameError;
     private javax.swing.JLabel usernameLabel;
     // End of variables declaration//GEN-END:variables
 }

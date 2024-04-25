@@ -32,13 +32,16 @@ public class loginFrame extends javax.swing.JFrame {
         loginPanel1.setActionListenerButtonLogin(listener);
     }
 
-    public void setActionListenerForEnterKey (KeyListener listener)
-    {
-        loginPanel1.setActionListenerForEnterKey(listener);
-    }
-
     public void setErrorLabel(String error) {
         loginPanel1.setErrorLabel(error);
+    }
+
+    public void setUsernameError(String error) {
+        loginPanel1.setUsernameError(error);
+    }
+
+    public void setPasswordError(String error) {
+        loginPanel1.setPasswordError(error);
     }
 
     /**
