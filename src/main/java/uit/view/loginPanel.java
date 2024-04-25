@@ -61,7 +61,7 @@ public class loginPanel extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(400, 295));
 
-        loginLabel.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
+        loginLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         loginLabel.setText("Đăng nhập");
 
         username.setForeground(new java.awt.Color(153, 153, 153));
@@ -79,7 +79,7 @@ public class loginPanel extends javax.swing.JPanel {
         });
 
         btnLogin.setBackground(new java.awt.Color(0, 0, 255));
-        btnLogin.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        btnLogin.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnLogin.setForeground(new java.awt.Color(255, 255, 255));
         btnLogin.setText("Đăng nhập");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -88,10 +88,10 @@ public class loginPanel extends javax.swing.JPanel {
             }
         });
 
-        usernameLabel.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
+        usernameLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         usernameLabel.setText("Tên đăng nhập");
 
-        passwordLabel.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
+        passwordLabel.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         passwordLabel.setText("Mật khẩu");
 
         errorLabel.setForeground(new java.awt.Color(255, 0, 51));
@@ -117,7 +117,7 @@ public class loginPanel extends javax.swing.JPanel {
                         .addGap(20, 20, 20))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(usernameLabel)
-                        .addGap(0, 161, Short.MAX_VALUE))))
+                        .addGap(0, 298, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(errorLabel)
