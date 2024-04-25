@@ -3,8 +3,6 @@ package uit.controllers;
 import uit.view.loginFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import com.uitprojects.is210.login.LoginWrapper;
 import com.uitprojects.is210.login.ApiLoginHelper;
 
@@ -16,16 +14,29 @@ public class LoginController {
         this.loginWindow = loginWindow;
         loginWindow.setVisible(true);
         loginWindow.setActionListenerBtnLogin(new btnLogin());
-        loginWindow.setActionListenerForEnterKey(new EnterLogin());
     }
 
     public void getDataLogin() {
         try {
+            loginWindow.setErrorLabel("");
+            loginWindow.setUsernameError("");
+            loginWindow.setPasswordError("");
             String username = loginWindow.getInputUsername();
+            if(username.isEmpty()) {
+                loginWindow.setUsernameError("Tên đăng nhập không được trống!");
+                throw new IllegalArgumentException("Username cannot be empty!");
+            }
             String password = loginWindow.getInputPassword();
+            if(password.isEmpty()) {
+                loginWindow.setPasswordError("Mật khẩu không được trống!");
+                throw new IllegalArgumentException("Password cannot be empty!");
+            }
             ApiLoginHelper apiLoginHelper = new ApiLoginHelper(username, password);
             LoginWrapper loginWrapper = apiLoginHelper.login();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
         } catch (Exception e) {
+            e.printStackTrace();
             loginWindow.setErrorLabel("Tài khoản hoặc mật khẩu không chính xác!");
         }
     }
@@ -34,22 +45,6 @@ public class LoginController {
         @Override
         public void actionPerformed(ActionEvent e) {
             getDataLogin();
-        }
-    }
-
-    class EnterLogin implements KeyListener {
-        @Override
-        public void keyTyped(KeyEvent e) {
-        }
-        @Override
-        public void keyPressed(KeyEvent e) {
-            if ( e.getKeyCode() == KeyEvent.VK_ENTER)
-            {
-                getDataLogin();
-            }
-        }
-        @Override
-        public void keyReleased(KeyEvent e) {
         }
     }
 }
