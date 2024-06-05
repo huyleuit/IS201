@@ -8,6 +8,7 @@ import com.uitprojects.is210.employee.*;
 import uit.Util.MessageBox;
 
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,15 +113,27 @@ public class ListEmpPane extends javax.swing.JPanel {
         tableListEmp.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tableListEmp.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {},
-                {},
-                {},
-                {}
+
             },
             new String [] {
-
+                "Mã nhân viên", "Tên đăng nhập", "Tên nhân viên", "Chức vụ", "Giới tính", "Địa chỉ", "Số điện thoại", "Mức lương", "KPI", "Ngày tạo", "Ngày sửa cuối cùng"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tableListEmp.setComponentPopupMenu(ppmEmpList);
         tableListEmp.setRowHeight(30);
         jScrollPane1.setViewportView(tableListEmp);
@@ -163,7 +176,7 @@ public class ListEmpPane extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_ppmEditEmpActionPerformed
 
-    private void ppmDeleteEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmDeleteEmpActionPerformed
+    private void ppmDeleteEmpActionPerformed(ActionEvent evt) {//GEN-FIRST:event_ppmDeleteEmpActionPerformed
         try {
             int row = tableListEmp.getSelectedRow();
             if(row == -1) {
@@ -173,7 +186,7 @@ public class ListEmpPane extends javax.swing.JPanel {
                     Employee emp = getEmpList().get(row);
                     if (emp != null) {
                         ApiEmpHelper apiEmpHelper = new ApiEmpHelper("MWQ+S348U1B6SHVYeTgzYQ==");
-                        apiEmpHelper.deleteEmp(emp);
+                        apiEmpHelper.delete(emp);
                         MessageBox.showInfoMessage(this, "Xóa nhân viên thành công!");
                         loadTable();
                     } else {

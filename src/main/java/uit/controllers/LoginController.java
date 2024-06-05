@@ -2,10 +2,13 @@ package uit.controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import com.uitprojects.is210.login.LoginWrapper;
 import com.uitprojects.is210.login.ApiLoginHelper;
+import com.uitprojects.is210.login.LoginWrapper;
 import uit.model.User;
 import uit.view.LoginFrame;
+
+import static uit.Token.getToken;
+import static uit.Token.setToken;
 
 
 public class LoginController {
@@ -36,11 +39,15 @@ public class LoginController {
                 throw new IllegalArgumentException("Password cannot be empty!");
             }
             ApiLoginHelper apiLoginHelper = new ApiLoginHelper(username, password);
-            LoginWrapper loginWrapper = apiLoginHelper.login();
-            user.setToken(loginWrapper.getToken());
-            if(user.getToken() != null) {
+            setToken(apiLoginHelper.getToken());
+            if(getToken() != null) {
                 loginDialog.dispose();
             }
+//            LoginWrapper loginWrapper = apiLoginHelper.login();
+//            user.setToken(loginWrapper.getToken());
+//            if(user.getToken() != null) {
+//                loginDialog.dispose();
+//            }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (Exception e) {

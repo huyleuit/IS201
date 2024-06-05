@@ -79,7 +79,7 @@ public class AddEmpPane extends javax.swing.JPanel {
     private void createEmp(Employee emp) {
         try {
             ApiEmpHelper apiEmpHelper = new ApiEmpHelper("MWQ+S348U1B6SHVYeTgzYQ==");
-            apiEmpHelper.createEmp(emp);
+            apiEmpHelper.create(emp);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,7 +88,7 @@ public class AddEmpPane extends javax.swing.JPanel {
     private void updateEmp(Employee emp) {
         try {
             ApiEmpHelper apiEmpHelper = new ApiEmpHelper("MWQ+S348U1B6SHVYeTgzYQ==");
-            apiEmpHelper.updateEmp(emp);
+            apiEmpHelper.update(emp);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -339,21 +339,21 @@ public class AddEmpPane extends javax.swing.JPanel {
                         .addComponent(inputPhone)
                         .addComponent(inputRole)
                         .addComponent(inputName)
-                        .addComponent(inputEmpId)
                         .addComponent(inputSalary)
                         .addComponent(inputGender, 0, 250, Short.MAX_VALUE)
-                        .addComponent(inputUsername))
+                        .addComponent(inputUsername)
+                        .addComponent(inputEmpId))
                     .addComponent(inputKPI, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 213, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(labelEmpId)
-                    .addComponent(inputEmpId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inputEmpId, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelUsername)
