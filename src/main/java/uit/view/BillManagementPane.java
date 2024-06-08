@@ -4,6 +4,8 @@
  */
 package uit.view;
 
+import uit.Util.MessageBox;
+
 /**
  *
  * @author quochuy
@@ -17,8 +19,33 @@ public class BillManagementPane extends javax.swing.JPanel {
     public BillManagementPane(AdminFrame adminFrame) {
         this.adminFrame = adminFrame;
         initComponents();
+        defaultButtonState();
     }
 
+    private void defaultButtonState() {
+        changeButtonState(true, true, false, false, false, false);
+        changeFieldState(false, false, false, false, false, false, false);
+        txtBillId.setEditable(false);
+    }
+
+    private void changeButtonState(boolean addBill, boolean searchBill, boolean deleteBill, boolean addBillProduct, boolean updateBillProduct, boolean updatePayment) {
+        btnAddBill.setEnabled(addBill);
+        btnSearchBill.setEnabled(searchBill);
+        btnDeleteBill.setEnabled(deleteBill);
+        btnAddBillProduct.setEnabled(addBillProduct);
+        btnUpdateBillProduct.setEnabled(updateBillProduct);
+        btnUpdatePayment.setEnabled(updatePayment);
+    }
+
+    private void changeFieldState(boolean billId, boolean productId, boolean quantity, boolean discount, boolean received, boolean paymentMethod, boolean paymentStatus) {
+        txtBillId.setEnabled(billId);
+        txtProductId.setEnabled(productId);
+        txtQuantity.setEnabled(quantity);
+        txtDiscount.setEnabled(discount);
+        txtReceived.setEnabled(received);
+        txtPaymentStatus.setEnabled(paymentMethod);
+        txtPaymentMethod.setEnabled(paymentStatus);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,13 +55,13 @@ public class BillManagementPane extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        labelBillManagement = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         labelBillId = new javax.swing.JLabel();
         txtBillId = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableListProduct = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jSeparator2 = new javax.swing.JSeparator();
         btnAddBill = new javax.swing.JButton();
@@ -42,37 +69,38 @@ public class BillManagementPane extends javax.swing.JPanel {
         btnAddBillProduct = new javax.swing.JButton();
         btnUpdateBillProduct = new javax.swing.JButton();
         btnSearchBill = new javax.swing.JButton();
-        btnUpdateBill = new javax.swing.JButton();
-        btnDeleteBillProduct = new javax.swing.JButton();
         btnDeleteBill = new javax.swing.JButton();
+        jSeparator4 = new javax.swing.JSeparator();
+        btnUpdatePayment = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtProductId = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtQuantity = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtDiscount = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txtReceived = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtChange = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        txtPaymentStatus = new javax.swing.JComboBox<>();
+        txtPaymentMethod = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(900, 600));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel1.setText("Quản lý hoá đơn");
+        labelBillManagement.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        labelBillManagement.setText("Quản lý hoá đơn");
 
         labelBillId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         labelBillId.setText("Mã hoá đơn:");
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableListProduct.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        tableListProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -95,7 +123,7 @@ public class BillManagementPane extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableListProduct);
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -111,26 +139,47 @@ public class BillManagementPane extends javax.swing.JPanel {
         btnAddBillProduct.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         btnAddBillProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/new_20.png"))); // NOI18N
         btnAddBillProduct.setText("Thêm sản phẩm");
+        btnAddBillProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddBillProductActionPerformed(evt);
+            }
+        });
 
         btnUpdateBillProduct.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         btnUpdateBillProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/update_20.png"))); // NOI18N
         btnUpdateBillProduct.setText("Cập nhật sản phẩm");
+        btnUpdateBillProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateBillProductActionPerformed(evt);
+            }
+        });
 
         btnSearchBill.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         btnSearchBill.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/search_20.png"))); // NOI18N
         btnSearchBill.setText("Tìm kiếm hoá đơn");
-
-        btnUpdateBill.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        btnUpdateBill.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/update_20.png"))); // NOI18N
-        btnUpdateBill.setText("Cập nhật hoá đơn");
-
-        btnDeleteBillProduct.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnDeleteBillProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/delete_20.png"))); // NOI18N
-        btnDeleteBillProduct.setText("Xoá sản phẩm");
+        btnSearchBill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchBillActionPerformed(evt);
+            }
+        });
 
         btnDeleteBill.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnDeleteBill.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/delete_20.png"))); // NOI18N
         btnDeleteBill.setText("Xoá hoá đơn");
+        btnDeleteBill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteBillActionPerformed(evt);
+            }
+        });
+
+        btnUpdatePayment.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnUpdatePayment.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/update_20.png"))); // NOI18N
+        btnUpdatePayment.setText("Cập nhật thanh toán");
+        btnUpdatePayment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdatePaymentActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -145,9 +194,9 @@ public class BillManagementPane extends javax.swing.JPanel {
                     .addComponent(btnAddBillProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnUpdateBillProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
                     .addComponent(btnSearchBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnUpdateBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnDeleteBillProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnDeleteBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnDeleteBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator4)
+                    .addComponent(btnUpdatePayment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -161,8 +210,6 @@ public class BillManagementPane extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(btnSearchBill, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnUpdateBill, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addComponent(btnDeleteBill, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -171,7 +218,9 @@ public class BillManagementPane extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(btnUpdateBillProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnDeleteBillProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdatePayment, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -179,12 +228,12 @@ public class BillManagementPane extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Mã sản phẩm:");
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtProductId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Số lượng:");
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtQuantity.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -215,7 +264,9 @@ public class BillManagementPane extends javax.swing.JPanel {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Chiết khấu:");
 
-        jTextField3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtDiscount.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtDiscount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtDiscount.setText("0");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Phương thức thanh toán:");
@@ -233,17 +284,20 @@ public class BillManagementPane extends javax.swing.JPanel {
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Tiền thừa:");
 
-        jTextField5.setEditable(false);
-        jTextField5.setText("0");
+        txtChange.setEditable(false);
+        txtChange.setText("0");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel10.setText("Trạng thái thanh toán:");
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chưa thanh toán", "Đang thanh toán", "Thanh toán thành công" }));
+        txtPaymentStatus.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtPaymentStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đang thanh toán", "Thanh toán thành công", "Thanh toán thất bại" }));
 
-        jComboBox2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiền mặt" }));
+        txtPaymentMethod.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtPaymentMethod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiền mặt" }));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("%");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -257,25 +311,28 @@ public class BillManagementPane extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, 0, 1, Short.MAX_VALUE))
+                                .addComponent(txtPaymentStatus, 0, 1, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                                    .addComponent(txtReceived))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtReceived, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel1)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtPaymentMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel9)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtChange, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -286,11 +343,11 @@ public class BillManagementPane extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel3)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(labelBillId)
                                 .addGap(27, 27, 27)
@@ -310,29 +367,31 @@ public class BillManagementPane extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtProductId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPaymentMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel7)
+                                .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel1)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
                             .addComponent(txtReceived, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtChange, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtPaymentStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 25, Short.MAX_VALUE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -343,49 +402,92 @@ public class BillManagementPane extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jSeparator1)))
-                .addContainerGap())
+                .addGap(20, 20, 20)
+                .addComponent(labelBillManagement, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator1))
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelBillManagement, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 3, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBillActionPerformed
-        // TODO add your handling code here:
+        labelBillManagement.setText("Thêm hoá đơn");
+        changeButtonState(false, true, true, true, false, true);
+        changeFieldState(true, true, true, true, true, true, true);
+        txtBillId.setEditable(false);
+
     }//GEN-LAST:event_btnAddBillActionPerformed
+
+    private void btnSearchBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchBillActionPerformed
+        labelBillManagement.setText("Tìm kiếm hoá đơn");
+        if(!txtBillId.isEditable()) {
+            txtBillId.setText("");
+            txtProductId.setText("");
+            txtQuantity.setText("");
+            txtDiscount.setText("");
+            txtReceived.setText("");
+            txtChange.setText("0");
+            txtPaymentStatus.setSelectedIndex(0);
+            changeButtonState(true, true, false, false, false, false);
+            changeFieldState(true, false, false, false, false, false, false);
+            txtBillId.setEditable(true);
+        } else {
+            if(txtBillId.getText().isEmpty()) {
+                MessageBox.showErrorMessage(adminFrame, "Vui lòng nhập mã hoá đơn");
+                changeButtonState(true, true, false, false, false, false);
+            } else {
+                changeFieldState(true, true, true, true, true, true, true);
+                txtBillId.setEditable(false);
+            }
+        }
+    }//GEN-LAST:event_btnSearchBillActionPerformed
+
+    private void btnDeleteBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBillActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDeleteBillActionPerformed
+
+    private void btnAddBillProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBillProductActionPerformed
+        if(txtProductId.getText().isEmpty() || txtQuantity.getText().isEmpty()) {
+            MessageBox.showErrorMessage(adminFrame, "Vui lòng nhập đầy đủ mã sản phẩm và số lượng sản phẩm");
+        } else {
+            changeButtonState(false, true, true, true, true, true);
+            txtProductId.setText("");
+            txtQuantity.setText("");
+        }
+    }//GEN-LAST:event_btnAddBillProductActionPerformed
+
+    private void btnUpdateBillProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateBillProductActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnUpdateBillProductActionPerformed
+
+    private void btnUpdatePaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatePaymentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnUpdatePaymentActionPerformed
 
     private void txtReceivedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtReceivedActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtReceivedActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddBill;
     private javax.swing.JButton btnAddBillProduct;
     private javax.swing.JButton btnDeleteBill;
-    private javax.swing.JButton btnDeleteBillProduct;
     private javax.swing.JButton btnSearchBill;
-    private javax.swing.JButton btnUpdateBill;
     private javax.swing.JButton btnUpdateBillProduct;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton btnUpdatePayment;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -403,13 +505,17 @@ public class BillManagementPane extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JLabel labelBillId;
+    private javax.swing.JLabel labelBillManagement;
+    private javax.swing.JTable tableListProduct;
     private javax.swing.JTextField txtBillId;
+    private javax.swing.JTextField txtChange;
+    private javax.swing.JTextField txtDiscount;
+    private javax.swing.JComboBox<String> txtPaymentMethod;
+    private javax.swing.JComboBox<String> txtPaymentStatus;
+    private javax.swing.JTextField txtProductId;
+    private javax.swing.JTextField txtQuantity;
     private javax.swing.JTextField txtReceived;
     // End of variables declaration//GEN-END:variables
 }

@@ -76,6 +76,9 @@ public class AdminFrame extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         menuMembershipManagement = new javax.swing.JMenuItem();
         menuListMembership = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         menuHelp = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
 
@@ -91,6 +94,9 @@ public class AdminFrame extends javax.swing.JFrame {
         setTitle("Quản lý siêu thị");
         setSize(new java.awt.Dimension(1080, 768));
 
+        jPanel1.setPreferredSize(new java.awt.Dimension(1080, 768));
+        jPanel1.setSize(new java.awt.Dimension(1080, 768));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -103,6 +109,8 @@ public class AdminFrame extends javax.swing.JFrame {
         );
 
         tpnBoard.addTab("Home", jPanel1);
+
+        jScrollPane1.setAutoscrolls(true);
 
         jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
         jToolBar1.setRollover(true);
@@ -181,6 +189,11 @@ public class AdminFrame extends javax.swing.JFrame {
         tbrMembershipManagement.setFocusable(false);
         tbrMembershipManagement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         tbrMembershipManagement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbrMembershipManagement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbrMembershipManagementActionPerformed(evt);
+            }
+        });
         jToolBar1.add(tbrMembershipManagement);
 
         tbrListMembership.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -189,6 +202,11 @@ public class AdminFrame extends javax.swing.JFrame {
         tbrListMembership.setFocusable(false);
         tbrListMembership.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         tbrListMembership.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbrListMembership.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbrListMembershipActionPerformed(evt);
+            }
+        });
         jToolBar1.add(tbrListMembership);
         jToolBar1.add(jSeparator5);
 
@@ -198,15 +216,25 @@ public class AdminFrame extends javax.swing.JFrame {
         tbrPromotionManagement.setFocusable(false);
         tbrPromotionManagement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         tbrPromotionManagement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbrPromotionManagement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbrPromotionManagementActionPerformed(evt);
+            }
+        });
         jToolBar1.add(tbrPromotionManagement);
 
         tbrListPromotion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tbrListPromotion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/promotion_32.png"))); // NOI18N
-        tbrListPromotion.setText("DDanh sách chương trình khuyến mãi");
+        tbrListPromotion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/list_promotion_32.png"))); // NOI18N
+        tbrListPromotion.setText("Danh sách chương trình khuyến mãi");
         tbrListPromotion.setActionCommand("Danh sách chương trình khuyến mãi");
         tbrListPromotion.setFocusable(false);
         tbrListPromotion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         tbrListPromotion.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbrListPromotion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbrListPromotionActionPerformed(evt);
+            }
+        });
         jToolBar1.add(tbrListPromotion);
 
         jScrollPane1.setViewportView(jToolBar1);
@@ -241,6 +269,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
         menuEmpManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/employee_16.png"))); // NOI18N
         menuEmpManagement.setText("Nhân viên");
+        menuEmpManagement.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
 
         menuAddEmp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/add_emp_16.png"))); // NOI18N
         menuAddEmp.setText("Quản lý nhân viên");
@@ -264,6 +293,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bill_16.png"))); // NOI18N
         jMenu1.setText("Hoá đơn");
+        jMenu1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
 
         menuBillManagement.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         menuBillManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/bill_16.png"))); // NOI18N
@@ -289,6 +319,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/membership_card_16.png"))); // NOI18N
         jMenu2.setText("Membership");
+        jMenu2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
 
         menuMembershipManagement.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         menuMembershipManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/membership_card_16.png"))); // NOI18N
@@ -311,6 +342,32 @@ public class AdminFrame extends javax.swing.JFrame {
         jMenu2.add(menuListMembership);
 
         menuView.add(jMenu2);
+
+        jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/promotion_16.png"))); // NOI18N
+        jMenu7.setText("Chương trình khuyến mãi");
+        jMenu7.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+
+        jMenuItem1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/promotion_16.png"))); // NOI18N
+        jMenuItem1.setText("Quản lý chương trình khuyến mãi");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem1);
+
+        jMenuItem2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/list_promotion_16.png"))); // NOI18N
+        jMenuItem2.setText("Danh sách chương trình khuyến mãi");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem2);
+
+        menuView.add(jMenu7);
 
         jMenuBar1.add(menuView);
 
@@ -338,7 +395,7 @@ public class AdminFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tpnBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addComponent(tpnBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -400,12 +457,44 @@ public class AdminFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_menuBillManagementActionPerformed
 
     private void menuListMembershipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuListMembershipActionPerformed
-        // TODO add your handling code here:
+        tbrListMembershipActionPerformed(evt);
     }//GEN-LAST:event_menuListMembershipActionPerformed
 
     private void menuMembershipManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMembershipManagementActionPerformed
-        // TODO add your handling code here:
+        tbrMembershipManagementActionPerformed(evt);
     }//GEN-LAST:event_menuMembershipManagementActionPerformed
+
+    private void tbrMembershipManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbrMembershipManagementActionPerformed
+        MembershipManagementPane pane = new MembershipManagementPane(this);
+        tpnBoard.addTab("Quản lý thẻ thành viên", pane);
+        tpnBoard.setSelectedComponent(pane);
+    }//GEN-LAST:event_tbrMembershipManagementActionPerformed
+
+    private void tbrListMembershipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbrListMembershipActionPerformed
+        ListMembershipPane pane = new ListMembershipPane(this);
+        tpnBoard.addTab("Danh sách thẻ thành viên", pane);
+        tpnBoard.setSelectedComponent(pane);
+    }//GEN-LAST:event_tbrListMembershipActionPerformed
+
+    private void tbrPromotionManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbrPromotionManagementActionPerformed
+        PromotionManagementPane pane = new PromotionManagementPane(this);
+        tpnBoard.addTab("Quản lý chương trình khuyến mãi", pane);
+        tpnBoard.setSelectedComponent(pane);
+    }//GEN-LAST:event_tbrPromotionManagementActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void tbrListPromotionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbrListPromotionActionPerformed
+        ListPromotionPane pane = new ListPromotionPane(this);
+        tpnBoard.addTab("Danh sách chương trình khuyến mãi", pane);
+        tpnBoard.setSelectedComponent(pane);
+    }//GEN-LAST:event_tbrListPromotionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -450,7 +539,10 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
