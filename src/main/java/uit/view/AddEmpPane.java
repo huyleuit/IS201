@@ -6,10 +6,13 @@ package uit.view;
 
 import com.uitprojects.is210.employee.*;
 import uit.Util.MessageBox;
+import uit.Util.NumberFormat;
 import uit.validator.EmpValidator;
 import uit.validator.Validator;
 
 import java.util.Objects;
+
+import static uit.Token.getToken;
 
 /**
  *
@@ -31,18 +34,18 @@ public class AddEmpPane extends javax.swing.JPanel {
     public AddEmpPane(AdminFrame adminFrame, Employee employee) {
         this.adminFrame = adminFrame;
         initComponents();
-        changeButtonState(false, true, false, true);
-        changeFieldState(true);
+        changeButtonState(true, true, false, false);
+        changeFieldState(false);
         changeInputState(true);
         inputEmpId.setText(String.valueOf(employee.getEmp_id()));
         inputUsername.setText(employee.getUsername());
         inputName.setText(employee.getEmp_name());
-        inputRole.setText(employee.getRole());
+        inputRole.setText(String.valueOf(employee.getRole_id()));
         inputGender.setSelectedItem(employee.getGender());
         inputAddress.setText(employee.getAddress());
         inputPhone.setText(employee.getPhone());
-        inputSalary.setText(String.valueOf(employee.getSalary()));
-        inputKPI.setText(String.valueOf(employee.getKpi()));
+        inputSalary.setText(NumberFormat.inputDoubleFormat(employee.getSalary()));
+        inputKPI.setText(NumberFormat.inputIntFormat(employee.getKpi()));
     }
 
     private void changeButtonState(boolean add , boolean edit, boolean save, boolean update) {
@@ -78,19 +81,21 @@ public class AddEmpPane extends javax.swing.JPanel {
 
     private void createEmp(Employee emp) {
         try {
-            ApiEmpHelper apiEmpHelper = new ApiEmpHelper("MWQ+S348U1B6SHVYeTgzYQ==");
+            ApiEmpHelper apiEmpHelper = new ApiEmpHelper(getToken());
             apiEmpHelper.create(emp);
         } catch (Exception e) {
             e.printStackTrace();
+            MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!");
         }
     }
 
     private void updateEmp(Employee emp) {
         try {
-            ApiEmpHelper apiEmpHelper = new ApiEmpHelper("MWQ+S348U1B6SHVYeTgzYQ==");
+            ApiEmpHelper apiEmpHelper = new ApiEmpHelper(getToken());
             apiEmpHelper.update(emp);
         } catch (Exception e) {
             e.printStackTrace();
+            MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!");
         }
     }
     /**
@@ -487,6 +492,7 @@ public class AddEmpPane extends javax.swing.JPanel {
         changeButtonState(true, false, false, true);
         changeFieldState(true);
         changeInputState(true);
+        inputEmpId.setEditable(false);
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
@@ -497,7 +503,7 @@ public class AddEmpPane extends javax.swing.JPanel {
                 return;
             }
 
-            Employee emp = new Employee(Integer.parseInt(inputEmpId.getText()), inputUsername.getText(), inputName.getText(), inputRole.getText(), Objects.requireNonNull(inputGender.getSelectedItem()).toString(), inputAddress.getText(), inputPhone.getText(), Validator.isEmpty(inputSalary) ? 0 : Double.parseDouble(inputSalary.getText()), Validator.isEmpty(inputKPI) ? 0 : Double.parseDouble(inputKPI.getText()));
+            Employee emp = new Employee(inputUsername.getText(), inputName.getText(), Integer.parseInt(inputRole.getText()), Objects.requireNonNull(inputGender.getSelectedItem()).toString(), inputAddress.getText(), inputPhone.getText(), Validator.isEmpty(inputSalary) ? 0 : Double.parseDouble(inputSalary.getText()), Validator.isEmpty(inputKPI) ? 0 : Integer.parseInt(inputKPI.getText()));
             createEmp(emp);
             MessageBox.showInfoMessage(this, "Thêm nhân viên thành công");
             changeButtonState(true, true, false, false);
@@ -524,7 +530,7 @@ public class AddEmpPane extends javax.swing.JPanel {
                 return;
             }
 
-            Employee emp = new Employee(Integer.parseInt(inputEmpId.getText()), inputUsername.getText(), inputName.getText(), inputRole.getText(), Objects.requireNonNull(inputGender.getSelectedItem()).toString(), inputAddress.getText(), inputPhone.getText(), Validator.isEmpty(inputSalary) ? 0 : Double.parseDouble(inputSalary.getText()), Validator.isEmpty(inputKPI) ? 0 : Double.parseDouble(inputKPI.getText()));
+            Employee emp = new Employee(inputUsername.getText(), inputName.getText(), Integer.parseInt(inputRole.getText()), Objects.requireNonNull(inputGender.getSelectedItem()).toString(), inputAddress.getText(), inputPhone.getText(), Validator.isEmpty(inputSalary) ? 0 : Double.parseDouble(inputSalary.getText()), Validator.isEmpty(inputKPI) ? 0 : Integer.parseInt(inputKPI.getText()));
             updateEmp(emp);
             MessageBox.showInfoMessage(this, "Cập nhật nhân viên thành công");
         } catch (Exception e) {

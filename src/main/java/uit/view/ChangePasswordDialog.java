@@ -56,7 +56,7 @@ public class ChangePasswordDialog extends javax.swing.JDialog {
         jLabel2.setText("Tên đăng nhập");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("Mật khẩu");
+        jLabel3.setText("Mật khẩu (nếu có)");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Mật khẩu mới");

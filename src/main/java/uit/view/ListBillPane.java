@@ -4,7 +4,21 @@
  */
 package uit.view;
 
+import com.uitprojects.is210.bill.Bill;
+import com.uitprojects.is210.bill.BillApiHelper;
+import com.uitprojects.is210.bill.BillWrapper;
+import com.uitprojects.is210.employee.ApiEmpHelper;
+import com.uitprojects.is210.employee.Employee;
+import com.uitprojects.is210.employee.EmployeeWrapper;
+import uit.Util.CalendarToString;
+import uit.Util.MessageBox;
+
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.List;
+
+import static uit.Token.getToken;
+import static uit.Util.CalendarToString.calendarToString;
 
 /**
  *
@@ -21,6 +35,7 @@ public class ListBillPane extends javax.swing.JPanel {
         this.adminFrame = adminFrame;
         initComponents();
         initTable();
+        loadTable();
     }
 
     private void initTable() {
@@ -35,6 +50,29 @@ public class ListBillPane extends javax.swing.JPanel {
         });
     }
 
+    private void loadTable() {
+        List<Bill> billList = getBillList();
+        model.setRowCount(0);
+        for (Bill bill : billList) {
+            model.addRow(new Object[] {
+                bill.getBill_id(), bill.getEmp_id(), calendarToString(bill.getCreate_date()), calendarToString(bill.getLast_modified_date())
+            });
+        }
+    }
+
+    private List<Bill> getBillList() {
+       List<Bill> billList = new ArrayList<>();
+        try {
+            BillApiHelper billApiHelper = new BillApiHelper(getToken());
+            BillWrapper billWrapper = billApiHelper.read();
+            billList = billWrapper.data;
+
+            tableListBill.setModel(model);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return billList;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,14 +82,52 @@ public class ListBillPane extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ppmBillList = new javax.swing.JPopupMenu();
+        ppmRefresh = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        ppmEdit = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        ppmDelete = new javax.swing.JMenuItem();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableListBill = new javax.swing.JTable();
 
+        ppmRefresh.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ppmRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/update_20.png"))); // NOI18N
+        ppmRefresh.setText("Làm mới");
+        ppmRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmRefreshActionPerformed(evt);
+            }
+        });
+        ppmBillList.add(ppmRefresh);
+        ppmBillList.add(jSeparator1);
+
+        ppmEdit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ppmEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/edit_20.png"))); // NOI18N
+        ppmEdit.setText("Chỉnh sửa");
+        ppmEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmEditActionPerformed(evt);
+            }
+        });
+        ppmBillList.add(ppmEdit);
+        ppmBillList.add(jSeparator2);
+
+        ppmDelete.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ppmDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/delete_20.png"))); // NOI18N
+        ppmDelete.setText("Xóa");
+        ppmDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmDeleteActionPerformed(evt);
+            }
+        });
+        ppmBillList.add(ppmDelete);
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Danh sách hoá đơn");
 
-        tableListBill.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        tableListBill.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tableListBill.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -75,6 +151,9 @@ public class ListBillPane extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tableListBill.setComponentPopupMenu(ppmBillList);
+        tableListBill.setMinimumSize(new java.awt.Dimension(165, 0));
+        tableListBill.setRowHeight(30);
         jScrollPane1.setViewportView(tableListBill);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -101,10 +180,58 @@ public class ListBillPane extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void ppmRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmRefreshActionPerformed
+        loadTable();
+    }//GEN-LAST:event_ppmRefreshActionPerformed
+
+    private void ppmEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmEditActionPerformed
+        int row = tableListBill.getSelectedRow();
+        if(row == -1) {
+            MessageBox.showErrorMessage(this, "Vui lòng chọn hóa đơn cần sửa!");
+        } else {
+            Bill bill = getBillList().get(row);
+            if (bill != null) {
+                adminFrame.showEditBillPane(bill);
+            } else {
+                MessageBox.showErrorMessage(this, "Không tìm thấy hóa đơn cần sửa!");
+            }
+        }
+    }//GEN-LAST:event_ppmEditActionPerformed
+
+    private void ppmDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmDeleteActionPerformed
+        try {
+            int row = tableListBill.getSelectedRow();
+            if(row == -1) {
+                MessageBox.showErrorMessage(this, "Vui lòng chọn hóa đơn cần xóa!");
+            } else {
+                if (MessageBox.showConfirmMessage(this, "Bạn có chắc chắn muốn xóa hóa đơn này?") == 0) {
+                    Bill bill = getBillList().get(row);
+                    if (bill != null) {
+                        BillApiHelper billApiHelper = new BillApiHelper(getToken());
+                        billApiHelper.delete(bill.getBill_id());
+                        MessageBox.showInfoMessage(this, "Xóa hóa đơn thành công!");
+                        loadTable();
+                    } else {
+                        MessageBox.showErrorMessage(this, "Không tìm thấy hóa đơn cần xóa!");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!");
+        }
+    }//GEN-LAST:event_ppmDeleteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JPopupMenu ppmBillList;
+    private javax.swing.JMenuItem ppmDelete;
+    private javax.swing.JMenuItem ppmEdit;
+    private javax.swing.JMenuItem ppmRefresh;
     private javax.swing.JTable tableListBill;
     // End of variables declaration//GEN-END:variables
 }

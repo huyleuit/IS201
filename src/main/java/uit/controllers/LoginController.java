@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import com.uitprojects.is210.login.ApiLoginHelper;
 import com.uitprojects.is210.login.LoginWrapper;
+import uit.Util.MessageBox;
 import uit.model.User;
 import uit.view.LoginFrame;
 
@@ -39,15 +40,12 @@ public class LoginController {
                 throw new IllegalArgumentException("Password cannot be empty!");
             }
             ApiLoginHelper apiLoginHelper = new ApiLoginHelper(username, password);
+            apiLoginHelper.login();
             setToken(apiLoginHelper.getToken());
             if(getToken() != null) {
+                MessageBox.showInfoMessage(loginDialog ,"Đăng nhập thành công!");
                 loginDialog.dispose();
             }
-//            LoginWrapper loginWrapper = apiLoginHelper.login();
-//            user.setToken(loginWrapper.getToken());
-//            if(user.getToken() != null) {
-//                loginDialog.dispose();
-//            }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (Exception e) {

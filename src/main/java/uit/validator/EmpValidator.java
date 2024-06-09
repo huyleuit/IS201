@@ -7,15 +7,17 @@ public class EmpValidator {
         StringBuilder sb = new StringBuilder();
         if(Validator.isEmpty(txtEmpId)) {
             sb.append("Mã nhân viên không được để trống!\n");
-        }
-
-        if(Validator.isNotBiggerThanZero(txtEmpId)) {
-            sb.append("Mã nhân viên không hợp lệ!\n");
         } else {
-            if(Validator.isNotNumber(txtEmpId)) {
+            if(Validator.isNotBiggerThanZero(txtEmpId)) {
                 sb.append("Mã nhân viên không hợp lệ!\n");
+            } else {
+                if(Validator.isNotNumber(txtEmpId)) {
+                    sb.append("Mã nhân viên không hợp lệ!\n");
+                }
             }
         }
+
+
 
         if(Validator.isEmpty(txtUsername)) {
             sb.append("Tên đăng nhập không được để trống!\n");
@@ -46,10 +48,10 @@ public class EmpValidator {
         }
 
         if(!txtSalary.getText().isEmpty()) {
-            if(Validator.isNotNumber(txtSalary)) {
+            if(Validator.isNotDoubleNumber(txtSalary)) {
                 sb.append("Mức lương không hợp lệ!\n");
             } else {
-                if(Validator.isNotBiggerThanZero(txtSalary)) {
+                if(Validator.isNotBiggerThanZeroDouble(txtSalary)) {
                     sb.append("Mức lương không hợp lệ!\n");
                 }
             }

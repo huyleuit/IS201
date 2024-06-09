@@ -71,7 +71,7 @@ public class loginPanel extends javax.swing.JPanel {
         loginLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         loginLabel.setText("Đăng nhập");
 
-        username.setForeground(new java.awt.Color(153, 153, 153));
+        username.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         username.setToolTipText("");
         username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,6 +79,7 @@ public class loginPanel extends javax.swing.JPanel {
             }
         });
 
+        password.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         password.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passwordActionPerformed(evt);

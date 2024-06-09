@@ -9,6 +9,10 @@ public class PromotionValidator {
         StringBuilder sb = new StringBuilder();
         if(Validator.isEmpty(txtPromotionName)) {
             sb.append("Tên chương trình không được để trống!\n");
+        } else {
+            if(Validator.isOver255Characters(txtPromotionName)) {
+                sb.append("Tên chương trình không được quá 255 ký tự!\n");
+            }
         }
 
         if(Validator.isEmpty(txtDiscount)) {
@@ -41,8 +45,12 @@ public class PromotionValidator {
 
         if(Validator.isEmpty(txtContent)) {
             sb.append("Nội dung không được để trống!\n");
+        } else {
+            if(Validator.isOver255Characters(txtContent)) {
+                sb.append("Nội dung không được quá 255 ký tự!\n");
+            }
         }
 
-        return sb.toString();
+        return sb.isEmpty()? null : sb.toString();
     }
 }

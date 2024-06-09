@@ -6,11 +6,15 @@ package uit.view;
 
 import com.uitprojects.is210.employee.*;
 import uit.Util.MessageBox;
+import uit.Util.NumberFormat;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import static uit.Token.getToken;
+import static uit.Util.CalendarToString.calendarToString;
 
 /**
  *
@@ -39,7 +43,7 @@ public class ListEmpPane extends javax.swing.JPanel {
             }
         };
         model.setColumnIdentifiers(new Object[] {
-            "Mã nhân viên", "Tên đăng nhập", "Tên nhân viên", "Chức vụ", "Giới tính", "Địa chỉ", "Số điện thoại", "Mức lương", "KPI", "Ngày tạo", "Ngày sửa cuối cùng"
+            "Mã nhân viên", "Tên đăng nhập", "Tên nhân viên", "Mã chức vụ", "Giới tính", "Địa chỉ", "Số điện thoại", "Mức lương", "KPI", "Ngày tạo", "Sửa đổi lần cuối"
         });
     }
 
@@ -48,7 +52,7 @@ public class ListEmpPane extends javax.swing.JPanel {
         model.setRowCount(0);
         for (Employee emp : empList) {
             model.addRow(new Object[] {
-                emp.getEmp_id(), emp.getUsername(), emp.getEmp_name(), emp.getRole(), emp.getGender(), emp.getAddress(), emp.getPhone(), emp.getSalary(), emp.getKpi(), emp.getCreate_date(), emp.getLast_modified_date()
+                emp.getEmp_id(), emp.getUsername(), emp.getEmp_name(), emp.getRole_id(), emp.getGender(), emp.getAddress(), emp.getPhone(), NumberFormat.doubleFormat(emp.getSalary()), emp.getKpi(), calendarToString(emp.getCreate_date()), calendarToString(emp.getLast_modified_date())
             });
         }
     }
@@ -56,7 +60,7 @@ public class ListEmpPane extends javax.swing.JPanel {
     private List<Employee> getEmpList() {
         List<Employee> empList = new ArrayList<>();
         try {
-            ApiEmpHelper apiEmpHelper = new ApiEmpHelper("MWQ+S348U1B6SHVYeTgzYQ==");
+            ApiEmpHelper apiEmpHelper = new ApiEmpHelper(getToken());
             EmployeeWrapper employeeWrapper = apiEmpHelper.getEmp();
             empList = employeeWrapper.data;
 
@@ -76,8 +80,10 @@ public class ListEmpPane extends javax.swing.JPanel {
     private void initComponents() {
 
         ppmEmpList = new javax.swing.JPopupMenu();
-        ppmEditEmp = new javax.swing.JMenuItem();
+        ppmRefresh = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        ppmEditEmp = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
         ppmDeleteEmp = new javax.swing.JMenuItem();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -85,20 +91,31 @@ public class ListEmpPane extends javax.swing.JPanel {
 
         ppmEmpList.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
+        ppmRefresh.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ppmRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/refresh_20.png"))); // NOI18N
+        ppmRefresh.setText("Làm mới");
+        ppmRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmRefreshActionPerformed(evt);
+            }
+        });
+        ppmEmpList.add(ppmRefresh);
+        ppmEmpList.add(jSeparator1);
+
         ppmEditEmp.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         ppmEditEmp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/edit_20.png"))); // NOI18N
-        ppmEditEmp.setText("Edit");
+        ppmEditEmp.setText("Chỉnh sửa");
         ppmEditEmp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ppmEditEmpActionPerformed(evt);
             }
         });
         ppmEmpList.add(ppmEditEmp);
-        ppmEmpList.add(jSeparator1);
+        ppmEmpList.add(jSeparator2);
 
         ppmDeleteEmp.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         ppmDeleteEmp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/delete_20.png"))); // NOI18N
-        ppmDeleteEmp.setText("Delete");
+        ppmDeleteEmp.setText("Xóa");
         ppmDeleteEmp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ppmDeleteEmpActionPerformed(evt);
@@ -185,8 +202,8 @@ public class ListEmpPane extends javax.swing.JPanel {
                 if (MessageBox.showConfirmMessage(this, "Bạn có chắc chắn muốn xóa nhân viên này?") == 0) {
                     Employee emp = getEmpList().get(row);
                     if (emp != null) {
-                        ApiEmpHelper apiEmpHelper = new ApiEmpHelper("MWQ+S348U1B6SHVYeTgzYQ==");
-                        apiEmpHelper.delete(emp);
+                        ApiEmpHelper apiEmpHelper = new ApiEmpHelper(getToken());
+                        apiEmpHelper.delete(emp.getEmp_id());
                         MessageBox.showInfoMessage(this, "Xóa nhân viên thành công!");
                         loadTable();
                     } else {
@@ -196,17 +213,24 @@ public class ListEmpPane extends javax.swing.JPanel {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!");
         }
     }//GEN-LAST:event_ppmDeleteEmpActionPerformed
+
+    private void ppmRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmRefreshActionPerformed
+        loadTable();
+    }//GEN-LAST:event_ppmRefreshActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JMenuItem ppmDeleteEmp;
     private javax.swing.JMenuItem ppmEditEmp;
     private javax.swing.JPopupMenu ppmEmpList;
+    private javax.swing.JMenuItem ppmRefresh;
     private javax.swing.JTable tableListEmp;
     // End of variables declaration//GEN-END:variables
 }

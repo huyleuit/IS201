@@ -35,9 +35,27 @@ public class Validator {
         }
     }
 
+    public static boolean isNotDoubleNumber(JTextField txt) {
+        try {
+            Double.parseDouble(txt.getText());
+            return false;
+        } catch (NumberFormatException e) {
+            return true;
+        }
+    }
+
     public static boolean isNotBiggerThanZero(JTextField txt) {
         try {
             int number = Integer.parseInt(txt.getText());
+            return number <= 0;
+        } catch (NumberFormatException e) {
+            return true;
+        }
+    }
+
+    public static boolean isNotBiggerThanZeroDouble(JTextField txt) {
+        try {
+            double number = Double.parseDouble(txt.getText());
             return number <= 0;
         } catch (NumberFormatException e) {
             return true;
@@ -80,5 +98,17 @@ public class Validator {
         LocalDate endDate = txtEndDate.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         return !endDate.isBefore(startDate);
+    }
+
+    public static boolean isOver255Characters(JComponent component) {
+        if(component instanceof JTextField) {
+            if(((JTextField) component).getText().length() > 255) {
+                return true;
+            }
+        }
+        if(component instanceof JTextArea) {
+            return ((JTextArea) component).getText().length() > 255;
+        }
+        return false;
     }
 }

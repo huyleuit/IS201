@@ -21,9 +21,7 @@ public class MembershipValidator {
 
         if(Validator.isEmpty(txtPhone)) {
             sb.append("Số điện thoại không được để trống!\n");
-        }
-
-        if(Validator.isNotNumber(txtPhone)) {
+        } else if(Validator.isNotNumber(txtPhone)) {
             sb.append("Số điện thoại không hợp lệ!\n");
         } else {
             if(Validator.isNotBiggerThanZero(txtPhone)) {
@@ -45,9 +43,7 @@ public class MembershipValidator {
 
         if(Validator.isEmpty(txtCardPoint)) {
             sb.append("Điểm thẻ không được để trống!\n");
-        }
-
-        if(Validator.isNotNumber(txtCardPoint)) {
+        } else if(Validator.isNotNumber(txtCardPoint)) {
             sb.append("Điểm thẻ không hợp lệ!\n");
         } else {
             if(Validator.isNotBiggerThanZero(txtCardPoint)) {
@@ -75,6 +71,6 @@ public class MembershipValidator {
             }
         }
 
-        return sb.toString();
+        return sb.isEmpty()? null : sb.toString();
     }
 }

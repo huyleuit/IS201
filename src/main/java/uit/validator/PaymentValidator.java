@@ -28,6 +28,6 @@ public class PaymentValidator {
             }
         }
 
-        return sb.toString();
+        return sb.isEmpty()? null : sb.toString();
     }
 }

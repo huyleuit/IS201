@@ -4,8 +4,11 @@
  */
 package uit.view;
 
+import com.uitprojects.is210.bill.Bill;
 import com.uitprojects.is210.employee.Employee;
 import uit.controllers.LoginController;
+
+import javax.swing.*;
 
 /**
  *
@@ -19,6 +22,8 @@ public class AdminFrame extends javax.swing.JFrame {
     public AdminFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
+        ImageIcon icon = new ImageIcon("src/main/resources/assets/icon.png");
+        setIconImage(icon.getImage());
     }
 
     public void showListEmp() {
@@ -28,6 +33,12 @@ public class AdminFrame extends javax.swing.JFrame {
     public void showEditEmpPane(Employee employee) {
         AddEmpPane pane = new AddEmpPane(this, employee);
         tpnBoard.addTab("Chỉnh sửa nhân viên", pane);
+        tpnBoard.setSelectedComponent(pane);
+    }
+
+    public void showEditBillPane(Bill bill) {
+        BillManagementPane pane = new BillManagementPane(this, bill);
+        tpnBoard.addTab("Chỉnh sửa hoá đơn", pane);
         tpnBoard.setSelectedComponent(pane);
     }
 
@@ -46,6 +57,8 @@ public class AdminFrame extends javax.swing.JFrame {
         jMenu6 = new javax.swing.JMenu();
         tpnBoard = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jSeparator9 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         jToolBar1 = new javax.swing.JToolBar();
         tbrCloseCurrentTab = new javax.swing.JButton();
@@ -61,6 +74,12 @@ public class AdminFrame extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JToolBar.Separator();
         tbrPromotionManagement = new javax.swing.JButton();
         tbrListPromotion = new javax.swing.JButton();
+        jSeparator6 = new javax.swing.JToolBar.Separator();
+        tbrCategoryManagement = new javax.swing.JButton();
+        jSeparator7 = new javax.swing.JToolBar.Separator();
+        tbrGoodManagement = new javax.swing.JButton();
+        jSeparator8 = new javax.swing.JToolBar.Separator();
+        tbrShipmentManagement = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuChangePassword = new javax.swing.JMenuItem();
@@ -76,9 +95,12 @@ public class AdminFrame extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         menuMembershipManagement = new javax.swing.JMenuItem();
         menuListMembership = new javax.swing.JMenuItem();
-        jMenu7 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        menuPromotionsManagement = new javax.swing.JMenu();
+        menuPromotionManagement = new javax.swing.JMenuItem();
+        menuListPromotion = new javax.swing.JMenuItem();
+        menuCategoryManagement = new javax.swing.JMenuItem();
+        menuGoodManagement = new javax.swing.JMenuItem();
+        menuShipmentManagement = new javax.swing.JMenuItem();
         menuHelp = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
 
@@ -92,20 +114,35 @@ public class AdminFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Quản lý siêu thị");
-        setSize(new java.awt.Dimension(1080, 768));
+        setIconImages(null);
+        setSize(new java.awt.Dimension(1200, 900));
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(1080, 768));
-        jPanel1.setSize(new java.awt.Dimension(1080, 768));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1200, 850));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel1.setText("Chào mừng bạn đến với Hệ thống Quản lý Bán hàng Siêu thị");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1068, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jLabel1)
+                .addContainerGap(451, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator9)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(643, Short.MAX_VALUE))
         );
 
         tpnBoard.addTab("Home", jPanel1);
@@ -226,7 +263,6 @@ public class AdminFrame extends javax.swing.JFrame {
         tbrListPromotion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tbrListPromotion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/list_promotion_32.png"))); // NOI18N
         tbrListPromotion.setText("Danh sách chương trình khuyến mãi");
-        tbrListPromotion.setActionCommand("Danh sách chương trình khuyến mãi");
         tbrListPromotion.setFocusable(false);
         tbrListPromotion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         tbrListPromotion.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -236,6 +272,48 @@ public class AdminFrame extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(tbrListPromotion);
+        jToolBar1.add(jSeparator6);
+
+        tbrCategoryManagement.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tbrCategoryManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/category_32.png"))); // NOI18N
+        tbrCategoryManagement.setText("Quản lý danh mục hàng hóa");
+        tbrCategoryManagement.setFocusable(false);
+        tbrCategoryManagement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tbrCategoryManagement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbrCategoryManagement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbrCategoryManagementActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(tbrCategoryManagement);
+        jToolBar1.add(jSeparator7);
+
+        tbrGoodManagement.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tbrGoodManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/good_32.png"))); // NOI18N
+        tbrGoodManagement.setText("Quản lý hàng hóa");
+        tbrGoodManagement.setFocusable(false);
+        tbrGoodManagement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tbrGoodManagement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbrGoodManagement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbrGoodManagementActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(tbrGoodManagement);
+        jToolBar1.add(jSeparator8);
+
+        tbrShipmentManagement.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tbrShipmentManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/shipment_32.png"))); // NOI18N
+        tbrShipmentManagement.setText("Quản lý lô hàng");
+        tbrShipmentManagement.setFocusable(false);
+        tbrShipmentManagement.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tbrShipmentManagement.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbrShipmentManagement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbrShipmentManagementActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(tbrShipmentManagement);
 
         jScrollPane1.setViewportView(jToolBar1);
 
@@ -343,31 +421,61 @@ public class AdminFrame extends javax.swing.JFrame {
 
         menuView.add(jMenu2);
 
-        jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/promotion_16.png"))); // NOI18N
-        jMenu7.setText("Chương trình khuyến mãi");
-        jMenu7.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        menuPromotionsManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/promotion_16.png"))); // NOI18N
+        menuPromotionsManagement.setText("Chương trình khuyến mãi");
+        menuPromotionsManagement.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
 
-        jMenuItem1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/promotion_16.png"))); // NOI18N
-        jMenuItem1.setText("Quản lý chương trình khuyến mãi");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        menuPromotionManagement.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        menuPromotionManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/promotion_16.png"))); // NOI18N
+        menuPromotionManagement.setText("Quản lý chương trình khuyến mãi");
+        menuPromotionManagement.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                menuPromotionManagementActionPerformed(evt);
             }
         });
-        jMenu7.add(jMenuItem1);
+        menuPromotionsManagement.add(menuPromotionManagement);
 
-        jMenuItem2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/list_promotion_16.png"))); // NOI18N
-        jMenuItem2.setText("Danh sách chương trình khuyến mãi");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        menuListPromotion.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        menuListPromotion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/list_promotion_16.png"))); // NOI18N
+        menuListPromotion.setText("Danh sách chương trình khuyến mãi");
+        menuListPromotion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                menuListPromotionActionPerformed(evt);
             }
         });
-        jMenu7.add(jMenuItem2);
+        menuPromotionsManagement.add(menuListPromotion);
 
-        menuView.add(jMenu7);
+        menuView.add(menuPromotionsManagement);
+
+        menuCategoryManagement.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        menuCategoryManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/category_16.png"))); // NOI18N
+        menuCategoryManagement.setText("Quản lý danh mục hàng hóa");
+        menuCategoryManagement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCategoryManagementActionPerformed(evt);
+            }
+        });
+        menuView.add(menuCategoryManagement);
+
+        menuGoodManagement.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        menuGoodManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/good_16.png"))); // NOI18N
+        menuGoodManagement.setText("Quản lý hàng hóa");
+        menuGoodManagement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuGoodManagementActionPerformed(evt);
+            }
+        });
+        menuView.add(menuGoodManagement);
+
+        menuShipmentManagement.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        menuShipmentManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/shipment_16.png"))); // NOI18N
+        menuShipmentManagement.setText("Quản lý lô hàng");
+        menuShipmentManagement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuShipmentManagementActionPerformed(evt);
+            }
+        });
+        menuView.add(menuShipmentManagement);
 
         jMenuBar1.add(menuView);
 
@@ -386,7 +494,7 @@ public class AdminFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tpnBoard)
+                .addComponent(tpnBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 1188, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
@@ -395,7 +503,7 @@ public class AdminFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tpnBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+                .addComponent(tpnBoard, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -482,19 +590,49 @@ public class AdminFrame extends javax.swing.JFrame {
         tpnBoard.setSelectedComponent(pane);
     }//GEN-LAST:event_tbrPromotionManagementActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void menuPromotionManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPromotionManagementActionPerformed
+        tbrPromotionManagementActionPerformed(evt);
+    }//GEN-LAST:event_menuPromotionManagementActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    private void menuListPromotionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuListPromotionActionPerformed
+        tbrListPromotionActionPerformed(evt);
+    }//GEN-LAST:event_menuListPromotionActionPerformed
 
     private void tbrListPromotionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbrListPromotionActionPerformed
         ListPromotionPane pane = new ListPromotionPane(this);
         tpnBoard.addTab("Danh sách chương trình khuyến mãi", pane);
         tpnBoard.setSelectedComponent(pane);
     }//GEN-LAST:event_tbrListPromotionActionPerformed
+
+    private void tbrCategoryManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbrCategoryManagementActionPerformed
+        CategoryManagementPane pane = new CategoryManagementPane(this);
+        tpnBoard.addTab("Quản lý danh mục hàng hóa", pane);
+        tpnBoard.setSelectedComponent(pane);
+    }//GEN-LAST:event_tbrCategoryManagementActionPerformed
+
+    private void menuCategoryManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCategoryManagementActionPerformed
+        tbrCategoryManagementActionPerformed(evt);
+    }//GEN-LAST:event_menuCategoryManagementActionPerformed
+
+    private void tbrGoodManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbrGoodManagementActionPerformed
+        GoodsManagementPane pane = new GoodsManagementPane(this);
+        tpnBoard.addTab("Quản lý hàng hóa", pane);
+        tpnBoard.setSelectedComponent(pane);
+    }//GEN-LAST:event_tbrGoodManagementActionPerformed
+
+    private void menuGoodManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuGoodManagementActionPerformed
+        tbrGoodManagementActionPerformed(evt);
+    }//GEN-LAST:event_menuGoodManagementActionPerformed
+
+    private void tbrShipmentManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbrShipmentManagementActionPerformed
+        ShipmentManagementPane pane = new ShipmentManagementPane(this);
+        tpnBoard.addTab("Quản lý lô hàng", pane);
+        tpnBoard.setSelectedComponent(pane);
+    }//GEN-LAST:event_tbrShipmentManagementActionPerformed
+
+    private void menuShipmentManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuShipmentManagementActionPerformed
+        tbrShipmentManagementActionPerformed(evt);
+    }//GEN-LAST:event_menuShipmentManagementActionPerformed
 
     /**
      * @param args the command line arguments
@@ -527,22 +665,20 @@ public class AdminFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AdminFrame().setVisible(true);
-//                new LoginController(new LoginFrame());
+                new LoginController(new LoginFrame());
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -551,28 +687,41 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JToolBar.Separator jSeparator5;
+    private javax.swing.JToolBar.Separator jSeparator6;
+    private javax.swing.JToolBar.Separator jSeparator7;
+    private javax.swing.JToolBar.Separator jSeparator8;
+    private javax.swing.JSeparator jSeparator9;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JMenuItem menuAddEmp;
     private javax.swing.JMenuItem menuBillManagement;
+    private javax.swing.JMenuItem menuCategoryManagement;
     private javax.swing.JMenuItem menuChangePassword;
     private javax.swing.JMenu menuEmpManagement;
     private javax.swing.JMenuItem menuExit;
     private javax.swing.JMenu menuFile;
+    private javax.swing.JMenuItem menuGoodManagement;
     private javax.swing.JMenu menuHelp;
     private javax.swing.JMenuItem menuListBill;
     private javax.swing.JMenuItem menuListEmp;
     private javax.swing.JMenuItem menuListMembership;
+    private javax.swing.JMenuItem menuListPromotion;
     private javax.swing.JMenuItem menuMembershipManagement;
+    private javax.swing.JMenuItem menuPromotionManagement;
+    private javax.swing.JMenu menuPromotionsManagement;
+    private javax.swing.JMenuItem menuShipmentManagement;
     private javax.swing.JMenu menuView;
     private javax.swing.JButton tbrBillManagement;
+    private javax.swing.JButton tbrCategoryManagement;
     private javax.swing.JButton tbrCloseCurrentTab;
     private javax.swing.JButton tbrEmpManagement;
+    private javax.swing.JButton tbrGoodManagement;
     private javax.swing.JButton tbrListBill;
     private javax.swing.JButton tbrListEmp;
     private javax.swing.JButton tbrListMembership;
     private javax.swing.JButton tbrListPromotion;
     private javax.swing.JButton tbrMembershipManagement;
     private javax.swing.JButton tbrPromotionManagement;
+    private javax.swing.JButton tbrShipmentManagement;
     private javax.swing.JTabbedPane tpnBoard;
     // End of variables declaration//GEN-END:variables
 }
