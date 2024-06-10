@@ -18,10 +18,10 @@ public class PromotionValidator {
         if(Validator.isEmpty(txtDiscount)) {
             sb.append("Mức giảm giá không được để trống!\n");
         } else {
-            if(Validator.isNotNumber(txtDiscount)) {
+            if(Validator.isNotDoubleNumber(txtDiscount)) {
                 sb.append("Mức giảm giá không hợp lệ!\n");
             } else {
-                if(Validator.isNotBiggerThanZero(txtDiscount)) {
+                if(Validator.isNotBiggerThanZeroDouble(txtDiscount)) {
                     sb.append("Mức giảm giá không hợp lệ!\n");
                 }
             }
@@ -29,10 +29,6 @@ public class PromotionValidator {
 
         if(Validator.isEmpty(txtStartDate)) {
             sb.append("Ngày bắt đầu không được để trống!\n");
-        } else {
-            if(!Validator.isValidStartDate(txtStartDate)) {
-                sb.append("Ngày bắt đầu không hợp lệ!\n");
-            }
         }
 
         if(Validator.isEmpty(txtEndDate)) {

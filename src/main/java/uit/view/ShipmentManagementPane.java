@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static uit.Token.getToken;
-import static uit.Util.CalendarToDate.calendarToDate;
 import static uit.Util.CalendarToString.calendarToString;
+import static uit.Util.DateFormat.vietnameseDateFormat;
 
 /**
  *
@@ -98,8 +98,8 @@ public class ShipmentManagementPane extends javax.swing.JPanel {
             model.addRow(new Object[] {
                     shipment.getShipment_id(),
                     shipment.getShipment_name(),
-                    shipment.getManufacture_date(),
-                    shipment.getExpiration_date(),
+                    vietnameseDateFormat(shipment.getManufacture_date()),
+                    vietnameseDateFormat(shipment.getExpiration_date()),
                     shipment.getGood_id(),
                     shipment.getQuantity(),
                     NumberFormat.doubleFormat(shipment.getPrice()),
@@ -513,6 +513,7 @@ public class ShipmentManagementPane extends javax.swing.JPanel {
             changeButtonState(true, false, false, false);
             clearInput();
             changeInputState(false);
+            labelState.setText("Quản lý lô hàng");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -534,6 +535,7 @@ public class ShipmentManagementPane extends javax.swing.JPanel {
         changeInputState(true);
         changeTextFieldState(true);
         txtShipmentId.setEditable(false);
+        txtShipmentName.requestFocus();
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed

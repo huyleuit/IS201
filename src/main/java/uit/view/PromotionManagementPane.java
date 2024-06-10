@@ -4,9 +4,23 @@
  */
 package uit.view;
 
+import com.uitprojects.is210.promotion.Promotion;
+import com.uitprojects.is210.promotion.PromotionApiHelper;
+import com.uitprojects.is210.promotion.PromotionWrapper;
+import com.uitprojects.is210.shipment.ShipmentApiHelper;
+import com.uitprojects.is210.shipment.ShipmentWrapper;
 import uit.Util.MessageBox;
 import uit.validator.PromotionValidator;
 import uit.validator.Validator;
+
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import java.util.ArrayList;
+import java.util.List;
+
+import static uit.Token.getToken;
+import static uit.Util.CalendarToString.calendarToString;
+import static uit.Util.DateFormat.vietnameseDateFormat;
 
 /**
  *
@@ -14,7 +28,7 @@ import uit.validator.Validator;
  */
 public class PromotionManagementPane extends javax.swing.JPanel {
     private AdminFrame adminFrame;
-    private boolean isSearching = false;
+    private DefaultTableModel model;
 
     /**
      * Creates new form PromotionManagementPane
@@ -22,6 +36,8 @@ public class PromotionManagementPane extends javax.swing.JPanel {
     public PromotionManagementPane(AdminFrame adminFrame) {
         this.adminFrame = adminFrame;
         initComponents();
+        initTable();
+        loadTable();
         changeButtonState(true, false, false, false);
         changeInputState(false);
         changeFieldState(false);
@@ -61,6 +77,65 @@ public class PromotionManagementPane extends javax.swing.JPanel {
         txtContent.setText("");
     }
 
+    private void initTable() {
+        model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        model.setColumnIdentifiers(new Object[] {
+                "Mã chương trình", "Tên chương trình", "Giảm giá", "Ngày bắt đầu", "Ngày kết thúc", "Nội dung", "Ngày tạo", "Sửa đổi lần cuối"
+        });
+    }
+
+    private void loadTable() {
+        List<Promotion> promotionList = getPromotionList();
+        model.setRowCount(0);
+        for(Promotion promotion : promotionList) {
+            model.addRow(new Object[] {
+                    promotion.getPro_id(),
+                    promotion.getPro_name(),
+                    promotion.getDiscount(),
+                    vietnameseDateFormat(promotion.getStart_date()),
+                    vietnameseDateFormat(promotion.getEnd_date()),
+                    promotion.getContent(),
+                    calendarToString(promotion.getCreate_date()),
+                    calendarToString(promotion.getLast_modified_date())
+            });
+        }
+    }
+
+    private List<Promotion> getPromotionList() {
+        List<Promotion> promotionList = new ArrayList<>();
+        try {
+            PromotionApiHelper promotionApiHelper = new PromotionApiHelper(getToken());
+            PromotionWrapper promotionWrapper = promotionApiHelper.read();
+            promotionList = promotionWrapper.data;
+
+            tablePromotionList.setModel(model);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return promotionList;
+    }
+
+    private void update(Promotion promotion) {
+        try {
+            PromotionApiHelper promotionApiHelper = new PromotionApiHelper(getToken());
+            promotionApiHelper.update(promotion);
+            loadTable();
+            MessageBox.showInfoMessage(adminFrame, "Cập nhật chương trình khuyến mãi thành công");
+        } catch (Exception e) {
+            if(e.getMessage().contains("pro_id not found")) {
+                MessageBox.showErrorMessage(adminFrame, "Mã chương trình khuyến mãi không tồn tại");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau\n" + e.getMessage());
+            }
+            e.printStackTrace();
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,6 +145,10 @@ public class PromotionManagementPane extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ppmTableListPromotion = new javax.swing.JPopupMenu();
+        ppmRefresh = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        ppmDelete = new javax.swing.JMenuItem();
         labelState = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
@@ -93,7 +172,28 @@ public class PromotionManagementPane extends javax.swing.JPanel {
         btnEdit = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablePromotionList = new javax.swing.JTable();
+
+        ppmRefresh.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ppmRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/refresh_20.png"))); // NOI18N
+        ppmRefresh.setText("Làm mới");
+        ppmRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmRefreshActionPerformed(evt);
+            }
+        });
+        ppmTableListPromotion.add(ppmRefresh);
+        ppmTableListPromotion.add(jSeparator3);
+
+        ppmDelete.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ppmDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/delete_20.png"))); // NOI18N
+        ppmDelete.setText("Xóa");
+        ppmDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmDeleteActionPerformed(evt);
+            }
+        });
+        ppmTableListPromotion.add(ppmDelete);
 
         labelState.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         labelState.setText("Quản lý chương trình khuyến mãi");
@@ -117,6 +217,7 @@ public class PromotionManagementPane extends javax.swing.JPanel {
         jLabel3.setText("Nội dung:");
 
         txtContent.setColumns(20);
+        txtContent.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtContent.setRows(5);
         jScrollPane1.setViewportView(txtContent);
 
@@ -201,8 +302,8 @@ public class PromotionManagementPane extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablePromotionList.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tablePromotionList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -225,8 +326,14 @@ public class PromotionManagementPane extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setRowHeight(30);
-        jScrollPane2.setViewportView(jTable1);
+        tablePromotionList.setComponentPopupMenu(ppmTableListPromotion);
+        tablePromotionList.setRowHeight(30);
+        tablePromotionList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablePromotionListMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablePromotionList);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -326,7 +433,6 @@ public class PromotionManagementPane extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        isSearching = false;
         labelState.setText("Thêm chương trình khuyến mãi");
         clearInput();
         changeButtonState(false, true, true, false);
@@ -363,6 +469,7 @@ public class PromotionManagementPane extends javax.swing.JPanel {
         changeInputState(true);
         changeFieldState(true);
         txtPromotionId.setEditable(false);
+        txtPromotionName.requestFocus();
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -372,10 +479,40 @@ public class PromotionManagementPane extends javax.swing.JPanel {
                 MessageBox.showErrorMessage(adminFrame, valid);
                 return;
             }
+
+            Promotion promotion = new Promotion(txtPromotionName.getText(), Double.parseDouble(txtDiscount.getText()), txtContent.getText(), txtStartDate.getDate(), txtEndDate.getDate());
+            promotion.setPro_id(Integer.parseInt(txtPromotionId.getText()));
+            update(promotion);
+            changeButtonState(true, false, false, false);
+            changeInputState(false);
+            clearInput();
+            labelState.setText("Quản lý chương trình khuyến mãi");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void tablePromotionListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePromotionListMouseClicked
+        int row = tablePromotionList.getSelectedRow();
+        TableModel model = tablePromotionList.getModel();
+        txtPromotionId.setText(model.getValueAt(row, 0).toString());
+        txtPromotionName.setText(model.getValueAt(row, 1).toString());
+        txtDiscount.setText(model.getValueAt(row, 2).toString());
+        txtStartDate.setDate(getPromotionList().get(row).getStart_date());
+        txtEndDate.setDate(getPromotionList().get(row).getEnd_date());
+        txtContent.setText(model.getValueAt(row, 5).toString());
+        changeButtonState(true, false, true, false);
+        changeInputState(true);
+        changeFieldState(false);
+    }//GEN-LAST:event_tablePromotionListMouseClicked
+
+    private void ppmRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmRefreshActionPerformed
+        loadTable();
+    }//GEN-LAST:event_ppmRefreshActionPerformed
+
+    private void ppmDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmDeleteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ppmDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -391,12 +528,16 @@ public class PromotionManagementPane extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JLabel labelDiscount;
     private javax.swing.JLabel labelEndDate;
     private javax.swing.JLabel labelPromotionId;
     private javax.swing.JLabel labelStartDate;
     private javax.swing.JLabel labelState;
+    private javax.swing.JMenuItem ppmDelete;
+    private javax.swing.JMenuItem ppmRefresh;
+    private javax.swing.JPopupMenu ppmTableListPromotion;
+    private javax.swing.JTable tablePromotionList;
     private javax.swing.JTextArea txtContent;
     private javax.swing.JTextField txtDiscount;
     private com.toedter.calendar.JDateChooser txtEndDate;

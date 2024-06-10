@@ -4,7 +4,21 @@
  */
 package uit.view;
 
+import com.uitprojects.is210.membership.Membership;
+import com.uitprojects.is210.membership.MembershipApiHelper;
+import com.uitprojects.is210.membership.MembershipWrapper;
 import uit.Util.MessageBox;
+import uit.validator.MembershipValidator;
+
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import java.util.ArrayList;
+import java.util.List;
+
+import static uit.Token.getToken;
+import static uit.Util.CalendarToString.calendarToString;
+import static uit.Util.DateFormat.vietnameseDateFormat;
+import static uit.Util.DateFormat.vietnameseDateFormatWithoutTime;
 
 /**
  *
@@ -12,7 +26,7 @@ import uit.Util.MessageBox;
  */
 public class MembershipManagementPane extends javax.swing.JPanel {
     private AdminFrame adminFrame;
-    private boolean isSearching = false;
+    private DefaultTableModel model;
 
     /**
      * Creates new form MembershipManagementPane
@@ -20,17 +34,18 @@ public class MembershipManagementPane extends javax.swing.JPanel {
     public MembershipManagementPane(AdminFrame adminFrame) {
         this.adminFrame = adminFrame;
         initComponents();
-        changeButtonState(true, false, false, false, false);
+        initTable();
+        loadTable();
+        changeButtonState(true, false, false, false);
         changeInputState(false);
         changeFieldState(false);
     }
 
-    private void changeButtonState(boolean add, boolean save, boolean edit, boolean update, boolean delete) {
+    private void changeButtonState(boolean add, boolean save, boolean edit, boolean update) {
         btnSave.setEnabled(save);
         btnAdd.setEnabled(add);
         btnEdit.setEnabled(edit);
         btnUpdate.setEnabled(update);
-        btnDelete.setEnabled(delete);
     }
 
     private void changeInputState(boolean state) {
@@ -39,6 +54,14 @@ public class MembershipManagementPane extends javax.swing.JPanel {
         txtBirthday.setEnabled(state);
         txtPhone.setEnabled(state);
         txtEmail.setEnabled(state);
+        txtCardPoint.setEnabled(state);
+        txtCardRank.setEnabled(state);
+        txtStartDate.setEnabled(state);
+        txtEndDate.setEnabled(state);
+        txtStatus.setEnabled(state);
+    }
+
+    private void changeSecondInputState(boolean state) {
         txtCardPoint.setEnabled(state);
         txtCardRank.setEnabled(state);
         txtStartDate.setEnabled(state);
@@ -59,6 +82,120 @@ public class MembershipManagementPane extends javax.swing.JPanel {
         txtStatus.setEnabled(state);
     }
 
+    private void clearInput() {
+        txtCardId.setText("");
+        txtMemberName.setText("");
+        txtBirthday.setDate(null);
+        txtPhone.setText("");
+        txtEmail.setText("");
+        txtCardPoint.setText("");
+        txtCardRank.setText("");
+        txtStartDate.setDate(null);
+        txtEndDate.setDate(null);
+        txtStatus.setSelectedIndex(0);
+    }
+
+    private void initTable() {
+        model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        model.setColumnIdentifiers(new Object[] {
+                "Mã thẻ thành viên", "Tên thành viên", "Ngày sinh", "Số điện thoại", "Email", "Điểm tích lũy", "Hạng thẻ", "Ngày bắt đầu", "Ngày kết thúc", "Trạng thái"
+        });
+    }
+
+    private void loadTable() {
+        List<Membership> membershipList = getMembershipList();
+        model.setRowCount(0);
+        for (Membership membership : membershipList) {
+            model.addRow(new Object[] {
+                    membership.getCard_id(),
+                    membership.getMember_name(),
+                    vietnameseDateFormatWithoutTime(membership.getDate_of_birth()),
+                    membership.getPhone(),
+                    membership.getEmail(),
+                    membership.getCard_point(),
+                    membership.getCard_rank(),
+                    vietnameseDateFormat(membership.getStart_date()),
+                    vietnameseDateFormat(membership.getEnd_date()),
+                    getVietnameseStatus(membership.getStatus())
+            });
+        }
+    }
+
+    private List<Membership> getMembershipList() {
+        List<Membership> membershipList = new ArrayList<>();
+        try {
+            MembershipApiHelper membershipApiHelper = new MembershipApiHelper(getToken());
+            MembershipWrapper membershipWrapper = membershipApiHelper.read();
+            membershipList = membershipWrapper.data;
+
+            tableListMembership.setModel(model);
+        } catch (Exception e) {
+            MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại\n" + e.getMessage());
+        }
+        return membershipList;
+    }
+
+    private String getVietnameseStatus(String status) {
+        switch (status) {
+            case "Active":
+                return "Đang hoạt động";
+            case "Inactive":
+                return "Không hoạt động";
+            case "Expired":
+                return "Hết hạn";
+            default:
+                return "Không hoạt động";
+        }
+    }
+
+    private String getComboBoxStatus() {
+        switch (txtStatus.getSelectedIndex()) {
+            case 0:
+                return "Active";
+            case 1:
+                return "Inactive";
+            case 2:
+                return "Expired";
+            default:
+                return "Inactive";
+        }
+    }
+
+    private void createMembership(Membership membership) {
+        try {
+            MembershipApiHelper membershipApiHelper = new MembershipApiHelper(getToken());
+            Membership newMembership = membershipApiHelper.create(membership);
+            loadTable();
+            MessageBox.showInfoMessage(adminFrame, "Thêm thẻ thành viên thành công!");
+        } catch (Exception e) {
+            if(e.getMessage().contains("Email already exists")) {
+                MessageBox.showErrorMessage(adminFrame, "Email đã tồn tại!");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại\n" + e.getMessage());
+            }
+            e.printStackTrace();
+        }
+    }
+
+    private void updateMembership(Membership membership) {
+        try {
+            MembershipApiHelper membershipApiHelper = new MembershipApiHelper(getToken());
+            Membership updatedMembership = membershipApiHelper.update(membership);
+            loadTable();
+            MessageBox.showInfoMessage(adminFrame, "Cập nhật thẻ thành viên thành công!");
+        } catch (Exception e) {
+            if(e.getMessage().contains("card_id not found")) {
+                MessageBox.showErrorMessage(adminFrame, "Mã thẻ thành viên không tồn tại!");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại\n" + e.getMessage());
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -68,6 +205,10 @@ public class MembershipManagementPane extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ppmTableListMembership = new javax.swing.JPopupMenu();
+        ppmRefresh = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        ppmDelete = new javax.swing.JMenuItem();
         labelState = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
@@ -97,9 +238,29 @@ public class MembershipManagementPane extends javax.swing.JPanel {
         btnUpdate = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableListMembership = new javax.swing.JTable();
+
+        ppmRefresh.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ppmRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/refresh_20.png"))); // NOI18N
+        ppmRefresh.setText("Làm mới");
+        ppmRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmRefreshActionPerformed(evt);
+            }
+        });
+        ppmTableListMembership.add(ppmRefresh);
+        ppmTableListMembership.add(jSeparator3);
+
+        ppmDelete.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ppmDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/delete_20.png"))); // NOI18N
+        ppmDelete.setText("Xóa");
+        ppmDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmDeleteActionPerformed(evt);
+            }
+        });
+        ppmTableListMembership.add(ppmDelete);
 
         setPreferredSize(new java.awt.Dimension(900, 600));
 
@@ -138,6 +299,8 @@ public class MembershipManagementPane extends javax.swing.JPanel {
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setText("Hạng thẻ:");
+
+        txtCardRank.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Ngày bắt đầu:");
@@ -193,15 +356,6 @@ public class MembershipManagementPane extends javax.swing.JPanel {
             }
         });
 
-        btnDelete.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/delete_20.png"))); // NOI18N
-        btnDelete.setText("Xoá");
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -211,14 +365,12 @@ public class MembershipManagementPane extends javax.swing.JPanel {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(54, 54, 54)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnDelete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -236,8 +388,6 @@ public class MembershipManagementPane extends javax.swing.JPanel {
                 .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -247,14 +397,14 @@ public class MembershipManagementPane extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã thẻ thành viên", "Tên thành viên", "Ngày sinh", "Số điện thoại", "Email", "Điểm tích lũy", "Hạng thẻ", "Ngày bắt đầu", "Ngày kết thúc", "Trạng thái", "Ngày tạo", "Sửa đổi lần cuối"
+                "Mã thẻ thành viên", "Tên thành viên", "Ngày sinh", "Số điện thoại", "Email", "Điểm tích lũy", "Hạng thẻ", "Ngày bắt đầu", "Ngày kết thúc", "Trạng thái"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -265,7 +415,13 @@ public class MembershipManagementPane extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tableListMembership.setComponentPopupMenu(ppmTableListMembership);
         tableListMembership.setRowHeight(30);
+        tableListMembership.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableListMembershipMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableListMembership);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -309,7 +465,7 @@ public class MembershipManagementPane extends javax.swing.JPanel {
                                     .addComponent(jLabel10)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(txtEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 78, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -324,11 +480,12 @@ public class MembershipManagementPane extends javax.swing.JPanel {
                             .addComponent(jLabel2)
                             .addComponent(txtCardId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtMemberName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)
-                            .addComponent(txtBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtBirthday, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel3)
+                                .addComponent(txtMemberName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel4)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
@@ -395,48 +552,146 @@ public class MembershipManagementPane extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        clearInput();
         labelState.setText("Thêm thẻ thành viên");
-        isSearching = false;
-        txtCardId.setText("");
-        txtMemberName.setText("");
-        txtBirthday.setDate(null);
-        txtPhone.setText("");
-        txtEmail.setText("");
-        txtCardPoint.setText("");
-        txtCardRank.setText("");
-        txtStartDate.setDate(null);
-        txtEndDate.setDate(null);
-        txtStatus.setSelectedIndex(0);
-
-        changeButtonState(false, true, true, false, false);
+        changeButtonState(false, true, false, false);
         changeInputState(true);
         changeFieldState(true);
+        changeSecondInputState(false);
+        txtCardId.setEnabled(false);
+        txtMemberName.requestFocus();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        labelState.setText("Quản lý thẻ thành viên");
-        changeButtonState(true, false, true, false, true);
+        try {
+            String valid = MembershipValidator.validateCreate(txtMemberName, txtBirthday, txtPhone, txtEmail);
+            if(valid != null) {
+                MessageBox.showErrorMessage(adminFrame, valid);
+                return;
+            }
+
+            Membership membership = new Membership(txtMemberName.getText(), txtBirthday.getDate(), txtPhone.getText(), txtEmail.getText());
+            createMembership(membership);
+            changeButtonState(true, false, false, false);
+            changeInputState(false);
+            clearInput();
+            labelState.setText("Quản lý thẻ thành viên");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        if(txtCardId.getText().isEmpty()) {
+            MessageBox.showErrorMessage(adminFrame, "Vui lòng chọn thẻ thành viên cần chỉnh sửa!");
+            return;
+        } else {
+            String validId = MembershipValidator.validateId(txtCardId);
+            if(validId != null) {
+                MessageBox.showErrorMessage(adminFrame, validId);
+                return;
+            }
+        }
         labelState.setText("Chỉnh sửa thẻ thành viên");
-        changeButtonState(true, false, false, true, true);
+        changeButtonState(false, false, false, true);
         changeInputState(true);
         changeFieldState(true);
+        txtCardId.setEditable(false);
+        txtMemberName.requestFocus();
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
+        try {
+            String valid = MembershipValidator.validateUpdate(txtMemberName, txtBirthday, txtPhone, txtEmail, txtCardPoint, txtCardRank, txtStartDate, txtEndDate);
+            if(valid != null) {
+                MessageBox.showErrorMessage(adminFrame, valid);
+                return;
+            }
+
+            Membership membership = new Membership(txtMemberName.getText(), txtBirthday.getDate(), txtPhone.getText(), txtEmail.getText());
+            membership.setCard_id(Integer.parseInt(txtCardId.getText()));
+            membership.setCard_point(Integer.parseInt(txtCardPoint.getText()));
+            membership.setCard_rank(txtCardRank.getText());
+            membership.setStart_date(txtStartDate.getDate());
+            membership.setEnd_date(txtEndDate.getDate());
+            membership.setStatus(getComboBoxStatus());
+            updateMembership(membership);
+            changeButtonState(true, false, false, false);
+            changeInputState(false);
+            clearInput();
+            labelState.setText("Quản lý thẻ thành viên");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDeleteActionPerformed
+    private void tableListMembershipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableListMembershipMouseClicked
+        int row = tableListMembership.getSelectedRow();
+        TableModel model = tableListMembership.getModel();
+        txtCardId.setText(model.getValueAt(row, 0).toString());
+        txtMemberName.setText(model.getValueAt(row, 1).toString());
+        txtBirthday.setDate(getMembershipList().get(row).getDate_of_birth());
+        txtPhone.setText(model.getValueAt(row, 3).toString());
+        txtEmail.setText(model.getValueAt(row, 4).toString());
+        txtCardPoint.setText(model.getValueAt(row, 5).toString());
+        txtCardRank.setText(model.getValueAt(row, 6).toString());
+        txtStartDate.setDate(getMembershipList().get(row).getStart_date());
+        txtEndDate.setDate(getMembershipList().get(row).getEnd_date());
+        switch (model.getValueAt(row, 9).toString()) {
+            case "Đang hoạt động":
+                txtStatus.setSelectedIndex(0);
+                break;
+            case "Không hoạt động":
+                txtStatus.setSelectedIndex(1);
+                break;
+            case "Hết hạn":
+                txtStatus.setSelectedIndex(2);
+                break;
+            default:
+                txtStatus.setSelectedIndex(1);
+                break;
+        }
+        changeButtonState(true, false, true, false);
+        changeInputState(true);
+        changeFieldState(false);
+    }//GEN-LAST:event_tableListMembershipMouseClicked
+
+    private void ppmRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmRefreshActionPerformed
+        loadTable();
+    }//GEN-LAST:event_ppmRefreshActionPerformed
+
+    private void ppmDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmDeleteActionPerformed
+        try {
+            int row = tableListMembership.getSelectedRow();
+            if(row == -1) {
+                MessageBox.showErrorMessage(adminFrame, "Vui lòng chọn thẻ thành viên cần xóa!");
+                return;
+            } else {
+                if(MessageBox.showConfirmMessage(adminFrame, "Bạn có chắc chắn muốn xóa thẻ thành viên này không?") == 0) {
+                    int cardId = Integer.parseInt(tableListMembership.getValueAt(row, 0).toString());
+                    MembershipApiHelper membershipApiHelper = new MembershipApiHelper(getToken());
+                    membershipApiHelper.delete(cardId);
+                    loadTable();
+                    MessageBox.showInfoMessage(adminFrame, "Xóa thẻ thành viên thành công!");
+                    clearInput();
+                    changeButtonState(true, false, false, false);
+                    changeInputState(false);
+                    changeFieldState(false);
+                    labelState.setText("Quản lý thẻ thành viên");
+                }
+            }
+        } catch (Exception e) {
+            if(e.getMessage().contains("card_id not found")) {
+                MessageBox.showErrorMessage(adminFrame, "Mã thẻ thành viên không tồn tại!");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại\n" + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_ppmDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnUpdate;
@@ -455,7 +710,11 @@ public class MembershipManagementPane extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JLabel labelState;
+    private javax.swing.JMenuItem ppmDelete;
+    private javax.swing.JMenuItem ppmRefresh;
+    private javax.swing.JPopupMenu ppmTableListMembership;
     private javax.swing.JTable tableListMembership;
     private com.toedter.calendar.JDateChooser txtBirthday;
     private javax.swing.JTextField txtCardId;

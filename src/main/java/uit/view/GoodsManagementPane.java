@@ -7,8 +7,11 @@ package uit.view;
 import com.uitprojects.is210.good.Good;
 import com.uitprojects.is210.good.GoodApiHelper;
 import com.uitprojects.is210.good.GoodWrapper;
+import uit.Util.MessageBox;
+import uit.validator.GoodValidator;
 
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +82,7 @@ public class GoodsManagementPane extends javax.swing.JPanel {
         for (Good good : goodsList) {
             model.addRow(new Object[] {
                     good.getGoods_id(),
-                    good.getGoods_id(),
+                    good.getGoods_name(),
                     good.getCategory_id(),
                     calendarToString(good.getCreate_date()),
                     calendarToString(good.getLast_modified_date())
@@ -105,7 +108,16 @@ public class GoodsManagementPane extends javax.swing.JPanel {
         try {
             GoodApiHelper goodApiHelper = new GoodApiHelper(getToken());
             goodApiHelper.create(good);
+            loadTable();
+            MessageBox.showInfoMessage(adminFrame, "Thêm hàng hóa thành công");
         } catch (Exception e) {
+            if(e.getMessage().contains("goods_name already exists")) {
+                MessageBox.showErrorMessage(adminFrame, "Tên hàng hóa đã tồn tại");
+            } else if(e.getMessage().contains("500")) {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau\nMã lỗi: 500");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau\n" + e.getMessage());
+            }
             e.printStackTrace();
         }
     }
@@ -114,7 +126,16 @@ public class GoodsManagementPane extends javax.swing.JPanel {
         try {
             GoodApiHelper goodApiHelper = new GoodApiHelper(getToken());
             goodApiHelper.update(good);
+            loadTable();
+            MessageBox.showInfoMessage(adminFrame, "Cập nhật hàng hóa thành công");
         } catch (Exception e) {
+            if(e.getMessage().contains("goods_id not found")) {
+                MessageBox.showErrorMessage(adminFrame, "Mã hàng hóa không tồn tại");
+            } else if(e.getMessage().contains("500")) {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau\nMã lỗi: 500");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau\n" + e.getMessage());
+            }
             e.printStackTrace();
         }
     }
@@ -127,6 +148,10 @@ public class GoodsManagementPane extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ppmTableListGoods = new javax.swing.JPopupMenu();
+        ppmRefresh = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        ppmDelete = new javax.swing.JMenuItem();
         labelState = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
@@ -144,6 +169,27 @@ public class GoodsManagementPane extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableGoodsList = new javax.swing.JTable();
         txtCategoryId = new javax.swing.JTextField();
+
+        ppmRefresh.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ppmRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/refresh_20.png"))); // NOI18N
+        ppmRefresh.setText("Làm mới");
+        ppmRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmRefreshActionPerformed(evt);
+            }
+        });
+        ppmTableListGoods.add(ppmRefresh);
+        ppmTableListGoods.add(jSeparator3);
+
+        ppmDelete.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ppmDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/delete_20.png"))); // NOI18N
+        ppmDelete.setText("Xóa");
+        ppmDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmDeleteActionPerformed(evt);
+            }
+        });
+        ppmTableListGoods.add(ppmDelete);
 
         labelState.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         labelState.setText("Quản lý hàng hóa");
@@ -256,7 +302,13 @@ public class GoodsManagementPane extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tableGoodsList.setComponentPopupMenu(ppmTableListGoods);
         tableGoodsList.setRowHeight(30);
+        tableGoodsList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableGoodsListMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableGoodsList);
 
         txtCategoryId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -276,10 +328,11 @@ public class GoodsManagementPane extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtGoodsId)
                             .addComponent(txtGoodsName, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(txtCategoryId, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtCategoryId, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -342,20 +395,111 @@ public class GoodsManagementPane extends javax.swing.JPanel {
         changeButtonState(false, true, false, false);
         changeInputState(false, true, true);
         changeTextFieldState(false, true, true);
+        txtGoodsName.requestFocus();
         clearInput();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        // TODO add your handling code here:
+        try {
+            String valid = GoodValidator.validate(txtGoodsName, txtCategoryId);
+            if(valid != null) {
+                MessageBox.showErrorMessage(adminFrame, valid);
+                return;
+            }
+
+            Good good = new Good(txtGoodsName.getText(), Integer.parseInt(txtCategoryId.getText()));
+            createGood(good);
+            changeButtonState(true, false, false, false);
+            changeInputState(false, false, false);
+            clearInput();
+            labelState.setText("Quản lý hàng hóa");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // TODO add your handling code here:
+        if(txtGoodsId.getText().isEmpty()) {
+            MessageBox.showErrorMessage(adminFrame, "Vui lòng chọn hàng hóa cần chỉnh sửa");
+            return;
+        } else {
+            String validId = GoodValidator.validateId(txtGoodsId);
+            if(validId != null) {
+                MessageBox.showErrorMessage(adminFrame, validId);
+                return;
+            }
+        }
+        labelState.setText("Chỉnh sửa hàng hóa");
+        changeButtonState(true, false, false, true);
+        changeInputState(true, true, true);
+        changeTextFieldState(false, true, true);
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
+        try {
+            String valid = GoodValidator.validate(txtGoodsName, txtCategoryId);
+            if(valid != null) {
+                MessageBox.showErrorMessage(adminFrame, valid);
+                return;
+            }
+
+            Good good = new Good(txtGoodsName.getText(), Integer.parseInt(txtCategoryId.getText()));
+            good.setGoods_id(Integer.parseInt(txtGoodsId.getText()));
+            updateGood(good);
+            changeButtonState(true, false, false, false);
+            changeInputState(false, false, false);
+            clearInput();
+            labelState.setText("Quản lý hàng hóa");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void tableGoodsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableGoodsListMouseClicked
+        int row = tableGoodsList.getSelectedRow();
+        TableModel model = tableGoodsList.getModel();
+        txtGoodsId.setText(model.getValueAt(row, 0).toString());
+        txtGoodsName.setText(model.getValueAt(row, 1).toString());
+        txtCategoryId.setText(model.getValueAt(row, 2).toString());
+        changeButtonState(true, false, true, false);
+        changeInputState(true, true, true);
+        changeTextFieldState(false, false, false);
+    }//GEN-LAST:event_tableGoodsListMouseClicked
+
+    private void ppmRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmRefreshActionPerformed
+        loadTable();
+    }//GEN-LAST:event_ppmRefreshActionPerformed
+
+    private void ppmDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmDeleteActionPerformed
+        try {
+            int row = tableGoodsList.getSelectedRow();
+            if(row == -1) {
+                MessageBox.showErrorMessage(adminFrame, "Vui lòng chọn hàng hóa cần xóa");
+                return;
+            } else {
+                if(MessageBox.showConfirmMessage(adminFrame, "Bạn có chắc chắn muốn xóa hàng hóa này không?") == 0) {
+                    int goodsId = Integer.parseInt(tableGoodsList.getValueAt(row, 0).toString());
+                    GoodApiHelper goodApiHelper = new GoodApiHelper(getToken());
+                    goodApiHelper.delete(goodsId);
+                    loadTable();
+                    MessageBox.showInfoMessage(adminFrame, "Xóa hàng hóa thành công");
+                    clearInput();
+                    changeButtonState(true, false, false, false);
+                    changeInputState(false, false, false);
+                    changeTextFieldState(false, false, false);
+                }
+            }
+        } catch (Exception e) {
+            if(e.getMessage().contains("goods_id not found")) {
+                MessageBox.showErrorMessage(adminFrame, "Mã hàng hóa không tồn tại");
+            } else if(e.getMessage().contains("please delete child record first")) {
+                MessageBox.showErrorMessage(adminFrame, "Không thể xóa hàng hóa này, vui lòng xóa các bản ghi liên quan trước");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau\n" + e.getMessage());
+            }
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_ppmDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -369,9 +513,13 @@ public class GoodsManagementPane extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JLabel labelGoodsId;
     private javax.swing.JLabel labelGoodsName;
     private javax.swing.JLabel labelState;
+    private javax.swing.JMenuItem ppmDelete;
+    private javax.swing.JMenuItem ppmRefresh;
+    private javax.swing.JPopupMenu ppmTableListGoods;
     private javax.swing.JTable tableGoodsList;
     private javax.swing.JTextField txtCategoryId;
     private javax.swing.JTextField txtGoodsId;

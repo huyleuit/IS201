@@ -5,7 +5,46 @@ import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
 
 public class MembershipValidator {
-    public static String validate(JTextField txtName, JDateChooser txtBirthday, JTextField txtPhone, JTextField txtEmail, JTextField txtCardPoint, JTextField txtCardRank, JDateChooser txtStartDate, JDateChooser txtEndDate) {
+    public static String validateCreate(JTextField txtName, JDateChooser txtBirthday, JTextField txtPhone, JTextField txtEmail) {
+        StringBuilder sb = new StringBuilder();
+        if(Validator.isEmpty(txtName)) {
+            sb.append("Tên không được để trống!\n");
+        }
+
+        if(Validator.isEmpty(txtBirthday)) {
+            sb.append("Ngày sinh không được để trống!\n");
+        } else {
+            if(!Validator.isValidBirthday(txtBirthday)) {
+                sb.append("Ngày sinh không hợp lệ!\n");
+            }
+        }
+
+        if(Validator.isEmpty(txtPhone)) {
+            sb.append("Số điện thoại không được để trống!\n");
+        } else if(Validator.isNotNumber(txtPhone)) {
+            sb.append("Số điện thoại không hợp lệ!\n");
+        } else {
+            if(Validator.isNotBiggerThanZero(txtPhone)) {
+                sb.append("Số điện thoại không hợp lệ!\n");
+            } else {
+                if(!Validator.isVietnamesePhoneNumber(txtPhone)) {
+                    sb.append("Số điện thoại không hợp lệ!\n");
+                }
+            }
+        }
+
+        if(Validator.isEmpty(txtEmail)) {
+            sb.append("Email không được để trống!\n");
+        } else {
+            if(!Validator.isValidEmail(txtEmail)) {
+                sb.append("Email không hợp lệ!\n");
+            }
+        }
+
+        return sb.isEmpty()? null : sb.toString();
+    }
+
+    public static String validateUpdate(JTextField txtName, JDateChooser txtBirthday, JTextField txtPhone, JTextField txtEmail, JTextField txtCardPoint, JTextField txtCardRank, JDateChooser txtStartDate, JDateChooser txtEndDate) {
         StringBuilder sb = new StringBuilder();
         if(Validator.isEmpty(txtName)) {
             sb.append("Tên không được để trống!\n");
@@ -71,6 +110,20 @@ public class MembershipValidator {
             }
         }
 
+        return sb.isEmpty()? null : sb.toString();
+    }
+
+    public static String validateId(JTextField txtId) {
+        StringBuilder sb = new StringBuilder();
+        if(Validator.isEmpty(txtId)) {
+            sb.append("Mã không được để trống!\n");
+        } else if(Validator.isNotNumber(txtId)) {
+            sb.append("Mã không hợp lệ!\n");
+        } else {
+            if(Validator.isNotBiggerThanZero(txtId)) {
+                sb.append("Mã không hợp lệ!\n");
+            }
+        }
         return sb.isEmpty()? null : sb.toString();
     }
 }
