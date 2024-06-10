@@ -398,13 +398,14 @@ public class CategoryManagementPane extends javax.swing.JPanel {
         changeButtonState(false, true, false, false);
         changeInputState(false, true, true);
         changeTextFieldState(false, true, true);
+        txtCategoryName.requestFocus();
         clearInput();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         try {
             String valid = CategoryValidator.validate(txtCategoryName, txtCategoryDescription);
-            if (!valid.isEmpty()) {
+            if (valid != null) {
                 MessageBox.showErrorMessage(adminFrame, valid);
                 return;
             }
@@ -424,7 +425,7 @@ public class CategoryManagementPane extends javax.swing.JPanel {
             return;
         } else {
             String validId = CategoryValidator.validateId(txtCategoryId);
-            if (!validId.isEmpty()) {
+            if (validId != null) {
                 MessageBox.showErrorMessage(adminFrame, validId);
                 return;
             }
@@ -439,7 +440,7 @@ public class CategoryManagementPane extends javax.swing.JPanel {
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         try {
             String valid = CategoryValidator.validate(txtCategoryName, txtCategoryDescription);
-            if (!valid.isEmpty()) {
+            if (valid != null) {
                 MessageBox.showErrorMessage(adminFrame, valid);
                 return;
             }
@@ -453,7 +454,6 @@ public class CategoryManagementPane extends javax.swing.JPanel {
             labelState.setText("Quản lý danh mục hàng hóa");
         } catch (Exception e) {
             e.printStackTrace();
-            MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau");
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 

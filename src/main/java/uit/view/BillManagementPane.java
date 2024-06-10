@@ -316,7 +316,7 @@ public class BillManagementPane extends javax.swing.JPanel {
 
         labelTotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         labelTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelTotal.setText("1,000,000,000.00 VNĐ");
+        labelTotal.setText("0 VNĐ");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Tổng tiền:");

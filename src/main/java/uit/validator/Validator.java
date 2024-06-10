@@ -111,4 +111,24 @@ public class Validator {
         }
         return false;
     }
+
+    public static boolean isValidPrice(JTextField txtPrice) {
+        try {
+            double price = Double.parseDouble(txtPrice.getText());
+            return price >= 1000;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean isValidManufactureDate(JDateChooser txtManufactureDate) {
+        if (txtManufactureDate.getDate() == null) {
+            return false;
+        }
+
+        LocalDate selectedDate = txtManufactureDate.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate currentDate = LocalDate.now();
+
+        return !selectedDate.isAfter(currentDate);
+    }
 }

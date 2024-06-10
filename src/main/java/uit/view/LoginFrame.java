@@ -58,7 +58,7 @@ public class LoginFrame extends javax.swing.JFrame {
         loginPanel = new uit.view.loginPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(600, 600));
+        setTitle("Đăng nhập");
         setSize(new java.awt.Dimension(600, 600));
 
         jLayeredPane1.setBackground(new java.awt.Color(51, 204, 255));

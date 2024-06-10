@@ -21,7 +21,7 @@ public class CategoryValidator {
             }
         }
 
-        return sb.toString();
+        return sb.isEmpty()? null : sb.toString();
     }
 
     public static String validateId(JTextField txtCategoryId) {
