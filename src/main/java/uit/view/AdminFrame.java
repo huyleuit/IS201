@@ -70,10 +70,8 @@ public class AdminFrame extends javax.swing.JFrame {
         tbrListBill = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         tbrMembershipManagement = new javax.swing.JButton();
-        tbrListMembership = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JToolBar.Separator();
         tbrPromotionManagement = new javax.swing.JButton();
-        tbrListPromotion = new javax.swing.JButton();
         jSeparator6 = new javax.swing.JToolBar.Separator();
         tbrCategoryManagement = new javax.swing.JButton();
         jSeparator7 = new javax.swing.JToolBar.Separator();
@@ -92,12 +90,8 @@ public class AdminFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         menuBillManagement = new javax.swing.JMenuItem();
         menuListBill = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
         menuMembershipManagement = new javax.swing.JMenuItem();
-        menuListMembership = new javax.swing.JMenuItem();
-        menuPromotionsManagement = new javax.swing.JMenu();
         menuPromotionManagement = new javax.swing.JMenuItem();
-        menuListPromotion = new javax.swing.JMenuItem();
         menuCategoryManagement = new javax.swing.JMenuItem();
         menuGoodManagement = new javax.swing.JMenuItem();
         menuShipmentManagement = new javax.swing.JMenuItem();
@@ -232,19 +226,6 @@ public class AdminFrame extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(tbrMembershipManagement);
-
-        tbrListMembership.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tbrListMembership.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/list_membership_32.png"))); // NOI18N
-        tbrListMembership.setText("Danh sách Membership");
-        tbrListMembership.setFocusable(false);
-        tbrListMembership.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        tbrListMembership.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        tbrListMembership.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tbrListMembershipActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(tbrListMembership);
         jToolBar1.add(jSeparator5);
 
         tbrPromotionManagement.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -259,19 +240,6 @@ public class AdminFrame extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(tbrPromotionManagement);
-
-        tbrListPromotion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tbrListPromotion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/list_promotion_32.png"))); // NOI18N
-        tbrListPromotion.setText("Danh sách chương trình khuyến mãi");
-        tbrListPromotion.setFocusable(false);
-        tbrListPromotion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        tbrListPromotion.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        tbrListPromotion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tbrListPromotionActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(tbrListPromotion);
         jToolBar1.add(jSeparator6);
 
         tbrCategoryManagement.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -395,10 +363,6 @@ public class AdminFrame extends javax.swing.JFrame {
 
         menuView.add(jMenu1);
 
-        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/membership_card_16.png"))); // NOI18N
-        jMenu2.setText("Membership");
-        jMenu2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-
         menuMembershipManagement.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         menuMembershipManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/membership_card_16.png"))); // NOI18N
         menuMembershipManagement.setText("Quản lý Membership");
@@ -407,23 +371,7 @@ public class AdminFrame extends javax.swing.JFrame {
                 menuMembershipManagementActionPerformed(evt);
             }
         });
-        jMenu2.add(menuMembershipManagement);
-
-        menuListMembership.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        menuListMembership.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/list_membership_16.png"))); // NOI18N
-        menuListMembership.setText("Danh sách Membership");
-        menuListMembership.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuListMembershipActionPerformed(evt);
-            }
-        });
-        jMenu2.add(menuListMembership);
-
-        menuView.add(jMenu2);
-
-        menuPromotionsManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/promotion_16.png"))); // NOI18N
-        menuPromotionsManagement.setText("Chương trình khuyến mãi");
-        menuPromotionsManagement.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        menuView.add(menuMembershipManagement);
 
         menuPromotionManagement.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         menuPromotionManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/promotion_16.png"))); // NOI18N
@@ -433,19 +381,7 @@ public class AdminFrame extends javax.swing.JFrame {
                 menuPromotionManagementActionPerformed(evt);
             }
         });
-        menuPromotionsManagement.add(menuPromotionManagement);
-
-        menuListPromotion.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        menuListPromotion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/list_promotion_16.png"))); // NOI18N
-        menuListPromotion.setText("Danh sách chương trình khuyến mãi");
-        menuListPromotion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuListPromotionActionPerformed(evt);
-            }
-        });
-        menuPromotionsManagement.add(menuListPromotion);
-
-        menuView.add(menuPromotionsManagement);
+        menuView.add(menuPromotionManagement);
 
         menuCategoryManagement.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         menuCategoryManagement.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/category_16.png"))); // NOI18N
@@ -564,10 +500,6 @@ public class AdminFrame extends javax.swing.JFrame {
         tbrBillManagementActionPerformed(evt);
     }//GEN-LAST:event_menuBillManagementActionPerformed
 
-    private void menuListMembershipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuListMembershipActionPerformed
-        tbrListMembershipActionPerformed(evt);
-    }//GEN-LAST:event_menuListMembershipActionPerformed
-
     private void menuMembershipManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMembershipManagementActionPerformed
         tbrMembershipManagementActionPerformed(evt);
     }//GEN-LAST:event_menuMembershipManagementActionPerformed
@@ -578,12 +510,6 @@ public class AdminFrame extends javax.swing.JFrame {
         tpnBoard.setSelectedComponent(pane);
     }//GEN-LAST:event_tbrMembershipManagementActionPerformed
 
-    private void tbrListMembershipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbrListMembershipActionPerformed
-        ListMembershipPane pane = new ListMembershipPane(this);
-        tpnBoard.addTab("Danh sách thẻ thành viên", pane);
-        tpnBoard.setSelectedComponent(pane);
-    }//GEN-LAST:event_tbrListMembershipActionPerformed
-
     private void tbrPromotionManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbrPromotionManagementActionPerformed
         PromotionManagementPane pane = new PromotionManagementPane(this);
         tpnBoard.addTab("Quản lý chương trình khuyến mãi", pane);
@@ -593,16 +519,6 @@ public class AdminFrame extends javax.swing.JFrame {
     private void menuPromotionManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPromotionManagementActionPerformed
         tbrPromotionManagementActionPerformed(evt);
     }//GEN-LAST:event_menuPromotionManagementActionPerformed
-
-    private void menuListPromotionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuListPromotionActionPerformed
-        tbrListPromotionActionPerformed(evt);
-    }//GEN-LAST:event_menuListPromotionActionPerformed
-
-    private void tbrListPromotionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbrListPromotionActionPerformed
-        ListPromotionPane pane = new ListPromotionPane(this);
-        tpnBoard.addTab("Danh sách chương trình khuyến mãi", pane);
-        tpnBoard.setSelectedComponent(pane);
-    }//GEN-LAST:event_tbrListPromotionActionPerformed
 
     private void tbrCategoryManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbrCategoryManagementActionPerformed
         CategoryManagementPane pane = new CategoryManagementPane(this);
@@ -673,7 +589,6 @@ public class AdminFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
@@ -703,11 +618,8 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JMenu menuHelp;
     private javax.swing.JMenuItem menuListBill;
     private javax.swing.JMenuItem menuListEmp;
-    private javax.swing.JMenuItem menuListMembership;
-    private javax.swing.JMenuItem menuListPromotion;
     private javax.swing.JMenuItem menuMembershipManagement;
     private javax.swing.JMenuItem menuPromotionManagement;
-    private javax.swing.JMenu menuPromotionsManagement;
     private javax.swing.JMenuItem menuShipmentManagement;
     private javax.swing.JMenu menuView;
     private javax.swing.JButton tbrBillManagement;
@@ -717,8 +629,6 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JButton tbrGoodManagement;
     private javax.swing.JButton tbrListBill;
     private javax.swing.JButton tbrListEmp;
-    private javax.swing.JButton tbrListMembership;
-    private javax.swing.JButton tbrListPromotion;
     private javax.swing.JButton tbrMembershipManagement;
     private javax.swing.JButton tbrPromotionManagement;
     private javax.swing.JButton tbrShipmentManagement;
