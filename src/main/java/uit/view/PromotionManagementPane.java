@@ -120,6 +120,22 @@ public class PromotionManagementPane extends javax.swing.JPanel {
         return promotionList;
     }
 
+    private void create(Promotion promotion) {
+        try {
+            PromotionApiHelper promotionApiHelper = new PromotionApiHelper(getToken());
+            promotionApiHelper.create(promotion);
+            loadTable();
+            MessageBox.showInfoMessage(adminFrame, "Thêm chương trình khuyến mãi thành công");
+        } catch (Exception e) {
+            if(e.getMessage().contains("pro_name already exists")) {
+                MessageBox.showErrorMessage(adminFrame, "Tên chương trình khuyến mãi đã tồn tại");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau\n" + e.getMessage());
+            }
+            e.printStackTrace();
+        }
+    }
+
     private void update(Promotion promotion) {
         try {
             PromotionApiHelper promotionApiHelper = new PromotionApiHelper(getToken());
@@ -448,7 +464,12 @@ public class PromotionManagementPane extends javax.swing.JPanel {
                 return;
             }
 
-            // Process
+            Promotion promotion = new Promotion(txtPromotionName.getText(), Double.parseDouble(txtDiscount.getText()), txtContent.getText(), txtStartDate.getDate(), txtEndDate.getDate());
+            create(promotion);
+            changeButtonState(true, false, false, false);
+            clearInput();
+            changeInputState(false);
+            labelState.setText("Quản lý chương trình khuyến mãi");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -511,7 +532,32 @@ public class PromotionManagementPane extends javax.swing.JPanel {
     }//GEN-LAST:event_ppmRefreshActionPerformed
 
     private void ppmDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmDeleteActionPerformed
-        // TODO add your handling code here:
+        try {
+            int row = tablePromotionList.getSelectedRow();
+            if(row == -1) {
+                MessageBox.showErrorMessage(adminFrame, "Vui lòng chọn chương trình khuyến mãi cần xóa");
+                return;
+            } else {
+                if(MessageBox.showConfirmMessage(adminFrame, "Bạn có chắc chắn muốn xóa chương trình khuyến mãi này không?") == 0) {
+                    int promotionId = Integer.parseInt(tablePromotionList.getValueAt(row, 0).toString());
+                    PromotionApiHelper promotionApiHelper = new PromotionApiHelper(getToken());
+                    promotionApiHelper.delete(promotionId);
+                    loadTable();
+                    MessageBox.showInfoMessage(adminFrame, "Xóa chương trình khuyến mãi thành công");
+                    clearInput();
+                    changeButtonState(true, false, false, false);
+                    changeInputState(false);
+                    labelState.setText("Quản lý chương trình khuyến mãi");
+                }
+            }
+        } catch (Exception e) {
+            if(e.getMessage().contains("pro_id not found")) {
+                MessageBox.showErrorMessage(adminFrame, "Mã chương trình khuyến mãi không tồn tại");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau\n" + e.getMessage());
+            }
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_ppmDeleteActionPerformed
 
 

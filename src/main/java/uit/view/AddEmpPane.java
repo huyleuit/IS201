@@ -85,7 +85,7 @@ public class AddEmpPane extends javax.swing.JPanel {
             apiEmpHelper.create(emp);
         } catch (Exception e) {
             e.printStackTrace();
-            MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!");
+            MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
         }
     }
 
@@ -95,7 +95,7 @@ public class AddEmpPane extends javax.swing.JPanel {
             apiEmpHelper.update(emp);
         } catch (Exception e) {
             e.printStackTrace();
-            MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!");
+            MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
         }
     }
     /**
@@ -162,11 +162,6 @@ public class AddEmpPane extends javax.swing.JPanel {
         inputName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         inputEmpId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        inputEmpId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputEmpIdActionPerformed(evt);
-            }
-        });
         inputEmpId.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 inputEmpIdKeyTyped(evt);
@@ -174,20 +169,10 @@ public class AddEmpPane extends javax.swing.JPanel {
         });
 
         inputRole.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        inputRole.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputRoleActionPerformed(evt);
-            }
-        });
 
         inputAddress.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         inputPhone.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        inputPhone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputPhoneActionPerformed(evt);
-            }
-        });
         inputPhone.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 inputPhoneKeyTyped(evt);
@@ -201,11 +186,6 @@ public class AddEmpPane extends javax.swing.JPanel {
         labelKPI.setText("KPI:");
 
         inputSalary.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        inputSalary.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputSalaryActionPerformed(evt);
-            }
-        });
         inputSalary.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 inputSalaryKeyTyped(evt);
@@ -213,11 +193,6 @@ public class AddEmpPane extends javax.swing.JPanel {
         });
 
         inputKPI.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        inputKPI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputKPIActionPerformed(evt);
-            }
-        });
         inputKPI.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 inputKPIKeyTyped(evt);
@@ -315,11 +290,6 @@ public class AddEmpPane extends javax.swing.JPanel {
         labelUsername.setText("Tên đăng nhập:");
 
         inputUsername.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        inputUsername.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputUsernameActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -427,30 +397,6 @@ public class AddEmpPane extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void inputEmpIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputEmpIdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputEmpIdActionPerformed
-
-    private void inputRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputRoleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputRoleActionPerformed
-
-    private void inputPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputPhoneActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputPhoneActionPerformed
-
-    private void inputSalaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputSalaryActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputSalaryActionPerformed
-
-    private void inputKPIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputKPIActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputKPIActionPerformed
-
-    private void inputUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputUsernameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputUsernameActionPerformed
 
     private void inputEmpIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputEmpIdKeyTyped
         char c = evt.getKeyChar();
