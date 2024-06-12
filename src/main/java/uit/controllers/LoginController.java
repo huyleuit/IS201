@@ -3,7 +3,6 @@ package uit.controllers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import com.uitprojects.is210.login.ApiLoginHelper;
-import com.uitprojects.is210.login.LoginWrapper;
 import uit.Util.MessageBox;
 import uit.model.User;
 import uit.view.LoginFrame;

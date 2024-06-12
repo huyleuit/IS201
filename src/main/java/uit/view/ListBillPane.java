@@ -7,10 +7,6 @@ package uit.view;
 import com.uitprojects.is210.bill.Bill;
 import com.uitprojects.is210.bill.BillApiHelper;
 import com.uitprojects.is210.bill.BillWrapper;
-import com.uitprojects.is210.employee.ApiEmpHelper;
-import com.uitprojects.is210.employee.Employee;
-import com.uitprojects.is210.employee.EmployeeWrapper;
-import uit.Util.CalendarToString;
 import uit.Util.MessageBox;
 
 import javax.swing.table.DefaultTableModel;
@@ -69,6 +65,11 @@ public class ListBillPane extends javax.swing.JPanel {
 
             tableListBill.setModel(model);
         } catch (Exception e) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(this, "Bạn không có quyền truy cập vào chức năng này!");
+            } else {
+                MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
             e.printStackTrace();
         }
         return billList;
@@ -218,7 +219,11 @@ public class ListBillPane extends javax.swing.JPanel {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!");
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(this, "Bạn không có quyền truy cập vào chức năng này!");
+            } else {
+                MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
         }
     }//GEN-LAST:event_ppmDeleteActionPerformed
 

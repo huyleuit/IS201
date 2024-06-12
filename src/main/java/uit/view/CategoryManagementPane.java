@@ -99,6 +99,14 @@ public class CategoryManagementPane extends javax.swing.JPanel {
 
             tableCategoryList.setModel(model);
         } catch (Exception e) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(this, "Bạn không có quyền truy cập vào chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false, false, false);
+                clearInput();
+            } else {
+                MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
             e.printStackTrace();
         }
         return categoryList;
@@ -111,7 +119,12 @@ public class CategoryManagementPane extends javax.swing.JPanel {
             loadTable();
             MessageBox.showInfoMessage(adminFrame, "Thêm danh mục hàng hóa thành công");
         } catch (Exception e) {
-            if(e.getMessage().contains("already exists")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false, false, false);
+                clearInput();
+            } else if(e.getMessage().contains("already exists")) {
                 MessageBox.showErrorMessage((adminFrame), "Danh mục hàng hóa đã tồn tại");
             } else {
                 MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau");
@@ -127,7 +140,12 @@ public class CategoryManagementPane extends javax.swing.JPanel {
             loadTable();
             MessageBox.showInfoMessage(adminFrame, "Cập nhật danh mục hàng hóa thành công");
         } catch (Exception e) {
-            if(e.getMessage().contains("not found")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false, false, false);
+                clearInput();
+            } else if(e.getMessage().contains("not found")) {
                 MessageBox.showErrorMessage((adminFrame), "Danh mục hàng hóa không tồn tại");
             } else {
                 MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau");
@@ -491,7 +509,12 @@ public class CategoryManagementPane extends javax.swing.JPanel {
                 }
             }
         } catch (Exception e) {
-            if(e.getMessage().contains("child record")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false, false, false);
+                clearInput();
+            } else if(e.getMessage().contains("child record")) {
                 MessageBox.showErrorMessage(adminFrame, "This bill has child record, can't not delete, please delete child record first");
             } else if(e.getMessage().contains("not found")) {
                 MessageBox.showErrorMessage(adminFrame, "Danh mục hàng hóa không tồn tại");

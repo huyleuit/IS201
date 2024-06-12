@@ -119,6 +119,14 @@ public class ShipmentManagementPane extends javax.swing.JPanel {
 
             tableShipmentList.setModel(model);
         } catch (Exception e) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(this, "Bạn không có quyền truy cập vào chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false);
+                clearInput();
+            } else {
+                MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
             e.printStackTrace();
         }
         return shipmentList;
@@ -131,7 +139,12 @@ public class ShipmentManagementPane extends javax.swing.JPanel {
             loadTable();
             MessageBox.showInfoMessage(adminFrame, "Thêm lô hàng thành công");
         } catch (Exception e) {
-            if(e.getMessage().contains("shipment_id already exists")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false);
+                clearInput();
+            } else if(e.getMessage().contains("shipment_id already exists")) {
                 MessageBox.showErrorMessage(adminFrame, "Mã lô hàng đã tồn tại");
             } else if(e.getMessage().contains("500")) {
                 MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại\n Mã lỗi: 500");
@@ -149,7 +162,12 @@ public class ShipmentManagementPane extends javax.swing.JPanel {
             loadTable();
             MessageBox.showInfoMessage(adminFrame, "Cập nhật lô hàng thành công");
         } catch (Exception e) {
-            if(e.getMessage().contains("Goods ID not found")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false);
+                clearInput();
+            } else if(e.getMessage().contains("Goods ID not found")) {
                 MessageBox.showErrorMessage(adminFrame, "Mã hàng hóa không tồn tại");
             } else if(e.getMessage().contains("shipment_id not found")) {
                 MessageBox.showErrorMessage(adminFrame, "Mã lô hàng không tồn tại");
@@ -597,7 +615,12 @@ public class ShipmentManagementPane extends javax.swing.JPanel {
                 }
             }
         } catch (Exception e) {
-            if(e.getMessage().contains("shipment_id not found")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false);
+                clearInput();
+            } else if(e.getMessage().contains("shipment_id not found")) {
                 MessageBox.showErrorMessage(adminFrame, "Mã lô hàng không tồn tại");
             } else if(e.getMessage().contains("Can't not delete because of child record found")) {
                 MessageBox.showErrorMessage(adminFrame, "Không thể xóa lô hàng này vì có hàng hóa liên quan");

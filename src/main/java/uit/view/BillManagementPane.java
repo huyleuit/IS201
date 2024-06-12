@@ -118,6 +118,11 @@ public class BillManagementPane extends javax.swing.JPanel {
 
             tableListProduct.setModel(model);
         } catch (Exception e) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền truy cập vào chức năng này!");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
             e.printStackTrace();
         }
         return billDetailList;
@@ -135,6 +140,11 @@ public class BillManagementPane extends javax.swing.JPanel {
             txtChange.setText(NumberFormat.intFormat(payment.getChange()));
             getPaymentStatus(payment.getPayment_status());
         } catch (Exception e) {
+            if(e.getMessage().contains("Payment not found")) {
+                MessageBox.showErrorMessage(adminFrame, "Không tìm thấy thông tin thanh toán cho hoá đơn này!");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
             e.printStackTrace();
         }
     }
@@ -665,7 +675,14 @@ public class BillManagementPane extends javax.swing.JPanel {
             model.setRowCount(0);
         } catch (Exception e) {
             e.printStackTrace();
-            MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại!");
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false, false, false);
+                changeFieldState(false, false, false, false, false, false, false, false);
+                clearInput();
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
         }
 
     }//GEN-LAST:event_btnAddBillActionPerformed
@@ -685,7 +702,14 @@ public class BillManagementPane extends javax.swing.JPanel {
                     model.setRowCount(0);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại!");
+                    if(e.getMessage().contains("Permission Deny")) {
+                        MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                        changeButtonState(false, false, false, false, false, false);
+                        changeFieldState(false, false, false, false, false, false, false, false);
+                        clearInput();
+                    } else {
+                        MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+                    }
                     clearInput();
                 }
             }
@@ -712,6 +736,16 @@ public class BillManagementPane extends javax.swing.JPanel {
             txtQuantity.setText("");
             loadTotal(Integer.parseInt(txtBillId.getText()));
         } catch (Exception e) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false, false, false);
+                changeFieldState(false, false, false, false, false, false, false, false);
+                clearInput();
+            } else if(e.getMessage().contains("Payment is already done")) {
+                MessageBox.showErrorMessage(adminFrame, "Không thể thêm sản phẩm cho hoá đơn đã thanh toán!");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnAddBillProductActionPerformed
@@ -734,7 +768,12 @@ public class BillManagementPane extends javax.swing.JPanel {
             txtQuantity.setText("");
             loadTotal(Integer.parseInt(txtBillId.getText()));
         } catch (Exception e) {
-            if(e.getMessage().contains("Payment is already done")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false, false, false);
+                changeFieldState(false, false, false, false, false, false, false, false);
+                clearInput();
+            } else if(e.getMessage().contains("Payment is already done")) {
                 MessageBox.showErrorMessage(adminFrame, "Không thể cập nhật sản phẩm cho hoá đơn đã thanh toán!");
             } else {
                 MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại!");

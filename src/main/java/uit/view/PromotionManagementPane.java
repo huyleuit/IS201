@@ -115,6 +115,14 @@ public class PromotionManagementPane extends javax.swing.JPanel {
 
             tablePromotionList.setModel(model);
         } catch (Exception e) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(this, "Bạn không có quyền truy cập vào chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false);
+                clearInput();
+            } else {
+                MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
             e.printStackTrace();
         }
         return promotionList;
@@ -127,7 +135,12 @@ public class PromotionManagementPane extends javax.swing.JPanel {
             loadTable();
             MessageBox.showInfoMessage(adminFrame, "Thêm chương trình khuyến mãi thành công");
         } catch (Exception e) {
-            if(e.getMessage().contains("pro_name already exists")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false);
+                clearInput();
+            } else if(e.getMessage().contains("pro_name already exists")) {
                 MessageBox.showErrorMessage(adminFrame, "Tên chương trình khuyến mãi đã tồn tại");
             } else {
                 MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau\n" + e.getMessage());
@@ -143,7 +156,12 @@ public class PromotionManagementPane extends javax.swing.JPanel {
             loadTable();
             MessageBox.showInfoMessage(adminFrame, "Cập nhật chương trình khuyến mãi thành công");
         } catch (Exception e) {
-            if(e.getMessage().contains("pro_id not found")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false);
+                clearInput();
+            } else if(e.getMessage().contains("pro_id not found")) {
                 MessageBox.showErrorMessage(adminFrame, "Mã chương trình khuyến mãi không tồn tại");
             } else {
                 MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau\n" + e.getMessage());
@@ -454,6 +472,8 @@ public class PromotionManagementPane extends javax.swing.JPanel {
         changeButtonState(false, true, true, false);
         changeInputState(true);
         changeFieldState(true);
+        txtPromotionId.setEnabled(false);
+        txtPromotionName.requestFocus();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
@@ -551,7 +571,12 @@ public class PromotionManagementPane extends javax.swing.JPanel {
                 }
             }
         } catch (Exception e) {
-            if(e.getMessage().contains("pro_id not found")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false);
+                clearInput();
+            } else if(e.getMessage().contains("pro_id not found")) {
                 MessageBox.showErrorMessage(adminFrame, "Mã chương trình khuyến mãi không tồn tại");
             } else {
                 MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau\n" + e.getMessage());

@@ -66,6 +66,11 @@ public class ListEmpPane extends javax.swing.JPanel {
 
             tableListEmp.setModel(model);
         } catch (Exception e) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền truy cập vào chức năng này!");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
             e.printStackTrace();
         }
         return empList;

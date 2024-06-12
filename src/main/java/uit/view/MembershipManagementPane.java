@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static uit.Token.getToken;
-import static uit.Util.CalendarToString.calendarToString;
 import static uit.Util.DateFormat.vietnameseDateFormat;
 import static uit.Util.DateFormat.vietnameseDateFormatWithoutTime;
 
@@ -135,7 +134,15 @@ public class MembershipManagementPane extends javax.swing.JPanel {
 
             tableListMembership.setModel(model);
         } catch (Exception e) {
-            MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại\n" + e.getMessage());
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(this, "Bạn không có quyền truy cập vào chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false);
+                clearInput();
+            } else {
+                MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
+            e.printStackTrace();
         }
         return membershipList;
     }
@@ -173,7 +180,12 @@ public class MembershipManagementPane extends javax.swing.JPanel {
             loadTable();
             MessageBox.showInfoMessage(adminFrame, "Thêm thẻ thành viên thành công!");
         } catch (Exception e) {
-            if(e.getMessage().contains("Email already exists")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false);
+                clearInput();
+            } else if(e.getMessage().contains("Email already exists")) {
                 MessageBox.showErrorMessage(adminFrame, "Email đã tồn tại!");
             } else {
                 MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại\n" + e.getMessage());
@@ -189,7 +201,12 @@ public class MembershipManagementPane extends javax.swing.JPanel {
             loadTable();
             MessageBox.showInfoMessage(adminFrame, "Cập nhật thẻ thành viên thành công!");
         } catch (Exception e) {
-            if(e.getMessage().contains("card_id not found")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false);
+                clearInput();
+            } else if(e.getMessage().contains("card_id not found")) {
                 MessageBox.showErrorMessage(adminFrame, "Mã thẻ thành viên không tồn tại!");
             } else {
                 MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại\n" + e.getMessage());

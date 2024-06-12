@@ -85,7 +85,11 @@ public class AddEmpPane extends javax.swing.JPanel {
             apiEmpHelper.create(emp);
         } catch (Exception e) {
             e.printStackTrace();
-            MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
         }
     }
 
@@ -95,7 +99,11 @@ public class AddEmpPane extends javax.swing.JPanel {
             apiEmpHelper.update(emp);
         } catch (Exception e) {
             e.printStackTrace();
-            MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+            } else {
+                MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
         }
     }
     /**
@@ -179,10 +187,10 @@ public class AddEmpPane extends javax.swing.JPanel {
             }
         });
 
-        labelSalary.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        labelSalary.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         labelSalary.setText("Mức lương:");
 
-        labelKPI.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        labelKPI.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         labelKPI.setText("KPI:");
 
         inputSalary.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -231,7 +239,7 @@ public class AddEmpPane extends javax.swing.JPanel {
             }
         });
 
-        btnList.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        btnList.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/list_20.png"))); // NOI18N
         btnList.setText("Danh sách");
         btnList.addActionListener(new java.awt.event.ActionListener() {
@@ -319,7 +327,7 @@ public class AddEmpPane extends javax.swing.JPanel {
                         .addComponent(inputUsername)
                         .addComponent(inputEmpId))
                     .addComponent(inputKPI, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 217, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(

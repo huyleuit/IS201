@@ -99,6 +99,14 @@ public class GoodsManagementPane extends javax.swing.JPanel {
 
             tableGoodsList.setModel(model);
         } catch (Exception e) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(this, "Bạn không có quyền truy cập vào chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false, false, false);
+                clearInput();
+            } else {
+                MessageBox.showErrorMessage(this, "Có lỗi xảy ra, vui lòng thử lại!\n" + e.getMessage());
+            }
             e.printStackTrace();
         }
         return goodsList;
@@ -111,7 +119,12 @@ public class GoodsManagementPane extends javax.swing.JPanel {
             loadTable();
             MessageBox.showInfoMessage(adminFrame, "Thêm hàng hóa thành công");
         } catch (Exception e) {
-            if(e.getMessage().contains("goods_name already exists")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false, false, false);
+                clearInput();
+            } else if(e.getMessage().contains("goods_name already exists")) {
                 MessageBox.showErrorMessage(adminFrame, "Tên hàng hóa đã tồn tại");
             } else if(e.getMessage().contains("500")) {
                 MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau\nMã lỗi: 500");
@@ -129,7 +142,12 @@ public class GoodsManagementPane extends javax.swing.JPanel {
             loadTable();
             MessageBox.showInfoMessage(adminFrame, "Cập nhật hàng hóa thành công");
         } catch (Exception e) {
-            if(e.getMessage().contains("goods_id not found")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false, false, false);
+                clearInput();
+            } else if(e.getMessage().contains("goods_id not found")) {
                 MessageBox.showErrorMessage(adminFrame, "Mã hàng hóa không tồn tại");
             } else if(e.getMessage().contains("500")) {
                 MessageBox.showErrorMessage(adminFrame, "Có lỗi xảy ra, vui lòng thử lại sau\nMã lỗi: 500");
@@ -490,7 +508,12 @@ public class GoodsManagementPane extends javax.swing.JPanel {
                 }
             }
         } catch (Exception e) {
-            if(e.getMessage().contains("goods_id not found")) {
+            if(e.getMessage().contains("Permission Deny")) {
+                MessageBox.showErrorMessage(adminFrame, "Bạn không có quyền thực hiện chức năng này!");
+                changeButtonState(false, false, false, false);
+                changeInputState(false, false, false);
+                clearInput();
+            } else if(e.getMessage().contains("goods_id not found")) {
                 MessageBox.showErrorMessage(adminFrame, "Mã hàng hóa không tồn tại");
             } else if(e.getMessage().contains("please delete child record first")) {
                 MessageBox.showErrorMessage(adminFrame, "Không thể xóa hàng hóa này, vui lòng xóa các bản ghi liên quan trước");
